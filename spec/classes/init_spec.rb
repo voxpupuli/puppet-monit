@@ -9,20 +9,20 @@ describe 'monit' do
         case facts[:osfamily]
         when 'Debian'
           config_file = '/etc/monit/monitrc'
-          config_dir  = '/etc/monit/conf.d'
+          config_dir = '/etc/monit/conf.d'
           monit_version = '5'
           case facts[:lsbdistcodename]
           when 'squeeze', 'lucid'
             default_file_content = 'startup=1'
             service_hasstatus    = false
-          when 'wheezy', 'jessie', 'stretch', 'precise', 'trusty', 'xenial', 'bionic'
+          when 'wheezy', 'jessie', 'stretch', 'precise', 'trusty', 'xenial', 'bionic',
             default_file_content = 'START=yes'
             service_hasstatus    = true
           else
             raise 'unsupported operatingsystemmajrelease detected on Debian osfamily'
           end
         when 'RedHat'
-          config_dir        = '/etc/monit.d'
+          config_dir = '/etc/monit.d'
           service_hasstatus = true
           case facts[:operatingsystem]
           when 'Amazon'
@@ -486,7 +486,7 @@ Detected lsbdistcodename is <hardy>\.})
       },
       'bool_stringified' => {
         name: ['httpd', 'manage_firewall', 'service_enable', 'service_manage', 'mmonit_https', 'mmonit_without_credential', 'config_dir_purge'],
-        valid: [true, 'true', false, 'false'],
+        valid: [true, false],
         invalid: ['invalid', 3, 2.42, ['array'], { 'ha' => 'sh' }, nil],
         message: '(is not a boolean|Unknown type of boolean)',
       },
@@ -498,7 +498,7 @@ Detected lsbdistcodename is <hardy>\.})
       },
       'integer_stringified' => {
         name: ['check_interval', 'httpd_port', 'start_delay'],
-        valid: [242, '242'],
+        valid: [242],
         invalid: [2.42, 'invalid', ['array'], { 'ha' => 'sh ' }, true, false, nil],
         message: 'Expected.*to be an Integer',
       },
