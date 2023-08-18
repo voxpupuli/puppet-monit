@@ -74,8 +74,8 @@ describe 'monit' do
 
         if facts[:osfamily] == 'Debian'
           it do
-            is_expected.to contain_file('/etc/default/monit').with('notify' => 'Service[monit]')
-                                                             .with_content(%r{^#{default_file_content}$})
+            is_expected.to contain_file('/etc/default/monit').with('notify' => 'Service[monit]').
+              with_content(%r{^#{default_file_content}$})
           end
         else
           it { is_expected.not_to contain_file('/etc/default/monit') }
@@ -233,11 +233,11 @@ describe 'monit' do
             end
 
             content = <<-END.gsub(%r{^\s+\|}, '')
-              |set mail-format \{
-              |    from: monit\@test.local
-              |    message: Monit \$ACTION \$SERVICE at \$DATE on \$HOST: \$DESCRIPTION
+              |set mail-format {
+              |    from: monit@test.local
+              |    message: Monit $ACTION $SERVICE at $DATE on $HOST: $DESCRIPTION
               |    subject: spectesting
-              |\}
+              |}
             END
             it { is_expected.to contain_file('monit_config').with_content(%r{#{Regexp.escape(content)}}) }
           end
@@ -340,9 +340,9 @@ describe 'monit' do
         end
 
         it 'fails' do
-          expect {
+          expect do
             is_expected.to contain_class('monit')
-          }.to raise_error(Puppet::PreformattedError, %r{expects an Integer\[1, 65535\] value})
+          end.to raise_error(Puppet::PreformattedError, %r{expects an Integer\[1, 65535\] value})
         end
       end
     end
@@ -351,9 +351,9 @@ describe 'monit' do
       let(:params) { { check_interval: 0 } }
 
       it 'fails' do
-        expect {
+        expect do
           is_expected.to contain_class('monit')
-        }.to raise_error(Puppet::PreformattedError, %r{expects an Integer\[1})
+        end.to raise_error(Puppet::PreformattedError, %r{expects an Integer\[1})
       end
     end
 
@@ -361,9 +361,9 @@ describe 'monit' do
       let(:params) { { start_delay: 0 } }
 
       it 'fails' do
-        expect {
+        expect do
           is_expected.to contain_class('monit')
-        }.to raise_error(Puppet::PreformattedError, %r{expects a value of type Undef or Integer\[1})
+        end.to raise_error(Puppet::PreformattedError, %r{expects a value of type Undef or Integer\[1})
       end
     end
 
@@ -376,9 +376,9 @@ describe 'monit' do
       end
 
       it 'fails' do
-        expect {
+        expect do
           is_expected.to contain_class('monit')
-        }.to raise_error(Puppet::Error, %r{monit supports Amazon Linux 2\. Detected operatingsystemmajrelease is <3>})
+        end.to raise_error(Puppet::Error, %r{monit supports Amazon Linux 2\. Detected operatingsystemmajrelease is <3>})
       end
     end
 
@@ -391,9 +391,9 @@ describe 'monit' do
       end
 
       it 'fails' do
-        expect {
+        expect do
           is_expected.to contain_class('monit')
-        }.to raise_error(Puppet::Error, %r{monit supports EL 5, 6 and 7\. Detected operatingsystemmajrelease is <4>})
+        end.to raise_error(Puppet::Error, %r{monit supports EL 5, 6 and 7\. Detected operatingsystemmajrelease is <4>})
       end
     end
 
@@ -406,9 +406,9 @@ describe 'monit' do
       end
 
       it 'fails' do
-        expect {
+        expect do
           is_expected.to contain_class('monit')
-        }.to raise_error(Puppet::Error, %r{monit supports Debian 6 \(squeeze\), 7 \(wheezy\), 8 \(jessie\), 9 \(stretch\) and 10 \(buster\) \
+        end.to raise_error(Puppet::Error, %r{monit supports Debian 6 \(squeeze\), 7 \(wheezy\), 8 \(jessie\), 9 \(stretch\) and 10 \(buster\) \
 and Ubuntu 10\.04 \(lucid\), 12\.04 \(precise\), 14\.04 \(trusty\), 16\.04 \(xenial\) and 18\.04 \(bionic\)\. \
 Detected lsbdistcodename is <etch>\.})
       end
@@ -423,9 +423,9 @@ Detected lsbdistcodename is <etch>\.})
       end
 
       it 'fails' do
-        expect {
+        expect do
           is_expected.to contain_class('monit')
-        }.to raise_error(Puppet::Error, %r{monit supports Debian 6 \(squeeze\), 7 \(wheezy\), 8 \(jessie\), 9 \(stretch\) and 10 \(buster\) \
+        end.to raise_error(Puppet::Error, %r{monit supports Debian 6 \(squeeze\), 7 \(wheezy\), 8 \(jessie\), 9 \(stretch\) and 10 \(buster\) \
 and Ubuntu 10\.04 \(lucid\), 12\.04 \(precise\), 14\.04 \(trusty\), 16\.04 \(xenial\) and 18\.04 \(bionic\). \
 Detected lsbdistcodename is <hardy>\.})
       end
@@ -439,9 +439,9 @@ Detected lsbdistcodename is <hardy>\.})
       end
 
       it 'fails' do
-        expect {
+        expect do
           is_expected.to contain_class('monit')
-        }.to raise_error(Puppet::Error, %r{monit supports osfamilies Debian and RedHat\. Detected osfamily is <Unsupported>\.})
+        end.to raise_error(Puppet::Error, %r{monit supports osfamilies Debian and RedHat\. Detected osfamily is <Unsupported>\.})
       end
     end
   end
@@ -459,31 +459,31 @@ Detected lsbdistcodename is <hardy>\.})
     end
     let(:validation_params) do
       {
-        #:param => 'value',
+        # :param => 'value',
       }
     end
 
     validations = {
       'absolute_path' => {
-        name: ['config_file', 'config_dir'],
+        name: %w[config_file config_dir],
         valid: ['/absolute/filepath', '/absolute/directory/'],
         invalid: ['invalid', 3, 2.42, ['array'], { 'ha' => 'sh' }],
         message: '(expects a String value|is not an absolute path)',
       },
       'array' => {
         name: ['alert_emails'],
-        valid: [['valid', 'array']],
+        valid: [%w[valid array]],
         invalid: ['string', { 'ha' => 'sh' }, 3, 2.42, true],
         message: 'expects an Array value',
       },
       'bool_stringified' => {
-        name: ['httpd', 'manage_firewall', 'service_enable', 'service_manage', 'mmonit_https', 'mmonit_without_credential', 'config_dir_purge'],
+        name: %w[httpd manage_firewall service_enable service_manage mmonit_https mmonit_without_credential config_dir_purge],
         valid: [true, 'true', false, 'false'],
         invalid: ['invalid', 3, 2.42, ['array'], { 'ha' => 'sh' }, nil],
         message: 'expects a value of type Boolean or Enum',
       },
       'integer' => {
-        name: ['check_interval', 'httpd_port', 'mmonit_port'],
+        name: %w[check_interval httpd_port mmonit_port],
         valid: [242],
         invalid: [2.42, 'invalid', ['array'], { 'ha' => 'sh ' }, true, false, nil],
         message: 'expects an Integer',
@@ -507,15 +507,15 @@ Detected lsbdistcodename is <hardy>\.})
         message: 'expects a value of type Undef or Hash',
       },
       'optional_string' => {
-        name: ['mailserver', 'mmonit_address'],
+        name: %w[mailserver mmonit_address],
         valid: ['present'],
         invalid: [['array'], { 'ha' => 'sh' }],
         message: 'expects a value of type Undef or String',
       },
       'string' => {
-        name: ['httpd_address', 'httpd_allow', 'httpd_user', 'httpd_password',
-               'package_ensure', 'package_name', 'service_name', 'mmonit_user',
-               'mmonit_password'],
+        name: %w[httpd_address httpd_allow httpd_user httpd_password
+                 package_ensure package_name service_name mmonit_user
+                 mmonit_password],
         valid: ['present'],
         invalid: [['array'], { 'ha' => 'sh' }],
         message: 'expects a String value',
@@ -532,7 +532,7 @@ Detected lsbdistcodename is <hardy>\.})
       var[:name].each do |var_name|
         var[:valid].each do |valid|
           context "with #{var_name} (#{type}) set to valid #{valid} (as #{valid.class})" do
-            let(:params) { validation_params.merge(:"#{var_name}" => valid) }
+            let(:params) { validation_params.merge("#{var_name}": valid) }
 
             it { is_expected.to compile }
           end
@@ -540,12 +540,12 @@ Detected lsbdistcodename is <hardy>\.})
 
         var[:invalid].each do |invalid|
           context "with #{var_name} (#{type}) set to invalid #{invalid} (as #{invalid.class})" do
-            let(:params) { validation_params.merge(:"#{var_name}" => invalid) }
+            let(:params) { validation_params.merge("#{var_name}": invalid) }
 
             it 'fails' do
-              expect {
+              expect do
                 catalogue
-              }.to raise_error(Puppet::Error, %r{#{var[:message]}})
+              end.to raise_error(Puppet::Error, %r{#{var[:message]}})
             end
           end
         end
