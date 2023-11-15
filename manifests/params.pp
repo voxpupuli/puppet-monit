@@ -79,7 +79,7 @@ Detected lsbdistcodename is <${::lsbdistcodename}>.")
               $monit_version = '5'
               $config_file   = '/etc/monit.conf'
             }
-            '7', '8': {
+            '7', '8', '9': {
               $monit_version = '5'
               $config_file   = '/etc/monitrc'
             }

@@ -41,7 +41,7 @@ describe 'monit' do
             when '6'
               monit_version = '5'
               config_file   = '/etc/monit.conf'
-            when '7', '8'
+            when '7', '8', '9'
               monit_version = '5'
               config_file   = '/etc/monitrc'
             else
