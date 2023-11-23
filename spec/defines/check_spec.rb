@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'monit::check' do
   let :pre_condition do
-    'include ::monit'
+    'include monit'
   end
   let(:title) { 'test' }
 
