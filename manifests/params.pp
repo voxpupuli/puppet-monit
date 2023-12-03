@@ -31,13 +31,13 @@ class monit::params {
   $mmonit_without_credential = false
 
   # <OS family handling>
-  case $::osfamily {
+  case $facts['os']['family'] {
     'Debian': {
       $config_file   = '/etc/monit/monitrc'
       $config_dir    = '/etc/monit/conf.d'
       $monit_version = '5'
 
-      case $::lsbdistcodename {
+      case $facts['os']['distro']['codename'] {
         'squeeze', 'lucid': {
           $default_file_content = 'startup=1'
           $service_hasstatus    = false
@@ -49,7 +49,7 @@ class monit::params {
         default: {
           fail("monit supports Debian 6 (squeeze), 7 (wheezy), 8 (jessie), 9 (stretch) and 10 (buster) \
 and Ubuntu 10.04 (lucid), 12.04 (precise), 14.04 (trusty), 16.04 (xenial) and 18.04 (bionic). \
-Detected lsbdistcodename is <${::lsbdistcodename}>.")
+Detected lsbdistcodename is <${facts['os']['distro']['codename']}>.")
         }
       }
     }
@@ -57,20 +57,20 @@ Detected lsbdistcodename is <${::lsbdistcodename}>.")
       $config_dir        = '/etc/monit.d'
       $service_hasstatus = true
 
-      case $::operatingsystem {
+      case $facts['os']['name'] {
         'Amazon': {
-          case $::operatingsystemmajrelease {
+          case $facts['os']['release']['major'] {
             '2016', '2018': {
               $monit_version = '5'
               $config_file   = '/etc/monit.conf'
             }
             default: {
-              fail("monit supports Amazon Linux 2. Detected operatingsystemmajrelease is <${::operatingsystemmajrelease}>.")
+              fail("monit supports Amazon Linux 2. Detected operatingsystemmajrelease is <${facts['os']['release']['major']}>.")
             }
           }
         }
         default: {
-          case $::operatingsystemmajrelease {
+          case $facts['os']['release']['major'] {
             '5': {
               $monit_version = '4'
               $config_file   = '/etc/monit.conf'
@@ -84,14 +84,14 @@ Detected lsbdistcodename is <${::lsbdistcodename}>.")
               $config_file   = '/etc/monitrc'
             }
             default: {
-              fail("monit supports EL 5, 6 and 7. Detected operatingsystemmajrelease is <${::operatingsystemmajrelease}>.")
+              fail("monit supports EL 5, 6 and 7. Detected operatingsystemmajrelease is <${facts['os']['release']['major']}>.")
             }
           }
         }
       }
     }
     default: {
-      fail("monit supports osfamilies Debian and RedHat. Detected osfamily is <${::osfamily}>.")
+      fail("monit supports osfamilies Debian and RedHat. Detected osfamily is <${facts['os']['family']}>.")
     }
   }
   # </OS family handling>
