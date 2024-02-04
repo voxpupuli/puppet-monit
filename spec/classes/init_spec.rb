@@ -11,42 +11,18 @@ describe 'monit' do
           config_file = '/etc/monit/monitrc'
           config_dir  = '/etc/monit/conf.d'
           monit_version = '5'
-          case facts[:lsbdistcodename]
-          when 'squeeze', 'lucid'
-            default_file_content = 'startup=1'
-            service_hasstatus    = false
-          when 'wheezy', 'jessie', 'stretch', 'buster', 'precise', 'trusty', 'xenial', 'bionic'
-            default_file_content = 'START=yes'
-            service_hasstatus    = true
-          else
-            raise 'unsupported operatingsystemmajrelease detected on Debian osfamily'
-          end
+          default_file_content = 'START=yes'
+          service_hasstatus    = true
         when 'RedHat'
           config_dir        = '/etc/monit.d'
           service_hasstatus = true
           case facts[:operatingsystem]
           when 'Amazon'
-            case facts[:operatingsystemmajrelease]
-            when '2016', '2018'
-              monit_version = '5'
-              config_file   = '/etc/monit.conf'
-            else
-              raise 'unsupported operatingsystemmajrelease detected on Amazon Linux operating system'
-            end
+            monit_version = '5'
+            config_file   = '/etc/monit.conf'
           else
-            case facts[:operatingsystemmajrelease]
-            when '5'
-              monit_version = '4'
-              config_file   = '/etc/monit.conf'
-            when '6'
-              monit_version = '5'
-              config_file   = '/etc/monit.conf'
-            when '7', '8'
-              monit_version = '5'
-              config_file   = '/etc/monitrc'
-            else
-              raise 'unsupported operatingsystemmajrelease detected on RedHat osfamily'
-            end
+            monit_version = '5'
+            config_file   = '/etc/monitrc'
           end
         else
           raise 'unsupported osfamily detected'
