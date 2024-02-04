@@ -1,8 +1,8 @@
-require 'beaker-rspec'
+require 'beaker_puppet_helpers'
 
 hosts.each do |host|
   # Install Puppet
-  on host, install_puppet
+  install_puppet_release_repo_on(host)
 end
 
 RSpec.configure do |c|
@@ -13,7 +13,7 @@ RSpec.configure do |c|
     # Install module
     install_local_module on(host)
     hosts.each do |host|
-      on host, 'puppet module install puppetlabs-stdlib'
+      install_puppet_module_via_pmt_on(host, stdlib)
     end
   end
 end
