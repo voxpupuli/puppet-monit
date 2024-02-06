@@ -16,14 +16,13 @@ describe 'monit' do
         when 'RedHat'
           config_dir        = '/etc/monit.d'
           service_hasstatus = true
-          case facts[:operatingsystem]
-          when 'Amazon'
-            monit_version = '5'
-            config_file   = '/etc/monit.conf'
-          else
-            monit_version = '5'
-            config_file   = '/etc/monitrc'
-          end
+          monit_version     = '5'
+          config_file = case facts[:operatingsystem]
+                        when 'Amazon'
+                          '/etc/monit.conf'
+                        else
+                          '/etc/monitrc'
+                        end
         else
           raise 'unsupported osfamily detected'
         end
