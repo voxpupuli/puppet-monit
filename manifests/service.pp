@@ -9,7 +9,7 @@ class monit::service inherits monit {
   }
 
   if $monit::service_manage_bool {
-    if $facts['os']['family'] == 'Debian' {
+    if $facts['osfamily'] == 'Debian' {
       file { '/etc/default/monit':
         content => $monit::default_file_content,
         notify  => Service[$monit::service_name],

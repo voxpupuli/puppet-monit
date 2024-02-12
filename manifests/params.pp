@@ -30,8 +30,7 @@ class monit::params {
   $mmonit_password           = 'monit'
   $mmonit_without_credential = false
 
-  # <OS family handling>
-  case $facts['os']['family'] {
+  case $facts['osfamily'] {
     'Debian': {
       $config_file   = '/etc/monit/monitrc'
       $config_dir    = '/etc/monit/conf.d'
