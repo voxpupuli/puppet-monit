@@ -49,6 +49,7 @@ class monit::params {
         }
         default: {
           $monit_version = '5'
+          $config_file   = '/etc/monitrc'
         }
       }
     }
