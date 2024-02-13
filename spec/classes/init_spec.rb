@@ -348,8 +348,7 @@ describe 'monit' do
       let(:params) { { check_interval: 0 } }
 
       it 'fails' do
-        expect do
-          is_expected.to compile.and_raise_error(%r{expects an Integer\[1})
+        is_expected.to compile.and_raise_error(%r{expects an Integer\[1})
       end
     end
 
@@ -357,8 +356,7 @@ describe 'monit' do
       let(:params) { { start_delay: 0 } }
 
       it 'fails' do
-        expect do
-          is_expected.to compile.and_raise_error(%r{expects a value of type Undef or Integer\[1})
+        is_expected.to compile.and_raise_error(%r{expects a value of type Undef or Integer\[1})
       end
     end
   end
