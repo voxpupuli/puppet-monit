@@ -104,9 +104,7 @@ describe 'monit::check' do
     end
 
     it 'fails' do
-      expect do
-        catalogue
-      end.to raise_error(Puppet::Error, %r{Parameters source and content are mutually exclusive})
+      is_expected.to compile.and_raise_error(%r{Parameters source and content are mutually exclusive})
     end
   end
 
@@ -161,9 +159,7 @@ describe 'monit::check' do
             let(:params) { validation_params.merge("#{var_name}": invalid) }
 
             it 'fails' do
-              expect do
-                catalogue
-              end.to raise_error(Puppet::PreformattedError, %r{expects a #{var[:message]}})
+              is_expected.to compile.and_raise_error(%r{expects a #{var[:message]}})
             end
           end
         end

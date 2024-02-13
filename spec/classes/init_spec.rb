@@ -458,9 +458,7 @@ describe 'monit' do
             let(:params) { validation_params.merge("#{var_name}": invalid) }
 
             it 'fails' do
-              expect do
-                catalogue
-              end.to raise_error(Puppet::Error, %r{#{var[:message]}})
+              is_expected.to compile.and_raise_error(%r{#{var[:message]}})
             end
           end
         end
