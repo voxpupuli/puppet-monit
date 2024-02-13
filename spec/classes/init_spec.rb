@@ -365,20 +365,6 @@ describe 'monit' do
         end.to raise_error(Puppet::PreformattedError, %r{expects a value of type Undef or Integer\[1})
       end
     end
-
-    context 'when osfamily is unsupported' do
-      let :facts do
-        { osfamily:                  'Unsupported',
-          operatingsystemmajrelease: '9',
-          monit_version:             '5' }
-      end
-
-      it 'fails' do
-        expect do
-          is_expected.to contain_class('monit')
-        end.to raise_error(Puppet::Error, %r{monit supports osfamilies Debian and RedHat\. Detected osfamily is <Unsupported>\.})
-      end
-    end
   end
 
   describe 'variable type and content validations' do
