@@ -57,5 +57,4 @@ class monit::params {
       fail("monit supports osfamilies Debian and RedHat. Detected osfamily is <${facts['os']['family']}>.")
     }
   }
-  # </OS family handling>
 }
