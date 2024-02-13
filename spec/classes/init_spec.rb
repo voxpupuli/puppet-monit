@@ -339,9 +339,7 @@ describe 'monit' do
         end
 
         it 'fails' do
-          expect do
-            is_expected.to contain_class('monit')
-          end.to raise_error(Puppet::PreformattedError, %r{expects an Integer\[1, 65535\] value})
+          is_expected.to compile.and_raise_error(%r{expects an Integer\[1, 65535\] value})
         end
       end
     end
