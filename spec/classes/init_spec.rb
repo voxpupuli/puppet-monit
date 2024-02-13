@@ -160,8 +160,8 @@ describe 'monit' do
 
             it do
               is_expected.to contain_firewall('2812 allow Monit inbound traffic').with('jump' => 'accept',
-                                                                                       'dport'  => '2812',
-                                                                                       'proto'  => 'tcp')
+                                                                                       'dport' => '2812',
+                                                                                       'proto' => 'tcp')
             end
           end
 
