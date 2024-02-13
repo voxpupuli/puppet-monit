@@ -11,7 +11,7 @@ class monit::firewall {
   if $monit::httpd_bool and $monit::manage_firewall_bool {
     if defined('::firewall') {
       firewall { "${monit::httpd_port} allow Monit inbound traffic":
-        action => 'accept',
+        jump => 'accept',
         dport  => $monit::httpd_port,
         proto  => 'tcp',
       }
