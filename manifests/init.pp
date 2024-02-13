@@ -193,8 +193,10 @@ class monit (
     fail("start_delay requires at least Monit 5.0. Detected version is <${monit_version_real}>.")
   }
 
-  class { "${module_name}::install": }
-  -> class { "${module_name}::config": }
-  ~> class { "${module_name}::service": }
-  -> class { "${module_name}::firewall": }
+  contain "${module_name}::install"
+  contain "${module_name}::config"
+  contain "${module_name}::service"
+  contain "${module_name}::firewall"
+
+  Class["${module_name}::install"] -> Class["${module_name}::config"] ~> Class["${module_name}::service"] -> Class["${module_name}::firewall"]
 }
