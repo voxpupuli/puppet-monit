@@ -187,11 +187,7 @@ class monit (
 
   # Use the monit_version fact if available, else use the default for the
   # platform.
-  if defined('$::monit_version') and $facts['monit_version'] {
-    $monit_version_real = $facts['monit_version']
-  } else {
-    $monit_version_real = $monit::params::monit_version
-  }
+  $monit_version_real = pick(fact('monit_version'), $monit::params::monit_version)
 
   if($start_delay and $start_delay > 0 and versioncmp($monit_version_real,'5') < 0) {
     fail("start_delay requires at least Monit 5.0. Detected version is <${monit_version_real}>.")
