@@ -238,7 +238,7 @@ describe 'monit' do
               |    subject: spectesting
               |}
             END
-            it { is_expected.to contain_file('monit_config').with_content(%r{#{Regexp.escape(content)}}) }
+            it { is_expected.to contain_file('monit_config').with_content(%r{#{content}}) }
           end
 
           context 'when alert_emails is set to valid array' do
