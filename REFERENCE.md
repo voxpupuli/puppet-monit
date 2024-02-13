@@ -87,7 +87,7 @@ Default value: `$monit::params::check_interval`
 
 ##### <a name="-monit--config_file"></a>`config_file`
 
-Data type: `String`
+Data type: `Stdlib::Absolutepath`
 
 Specifies a path to the main config file. Default value: varies with operating system
 
@@ -95,7 +95,7 @@ Default value: `$monit::params::config_file`
 
 ##### <a name="-monit--config_dir"></a>`config_dir`
 
-Data type: `String`
+Data type: `Stdlib::Absolutepath`
 
 Specifies a path to the config directory. Default value: varies with operating system
 
