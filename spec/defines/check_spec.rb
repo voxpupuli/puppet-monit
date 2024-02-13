@@ -52,11 +52,11 @@ describe 'monit::check' do
 
   context 'with content set to a valid value' do
     content = <<~END
-      |check process ntpd with pidfile /var/run/ntpd.pid
-      |start program = "/etc/init.d/ntpd start"
-      |stop  program = "/etc/init.d/ntpd stop"
-      |if failed host 127.0.0.1 port 123 type udp then alert
-      |if 5 restarts within 5 cycles then timeout
+      check process ntpd with pidfile /var/run/ntpd.pid
+      start program = "/etc/init.d/ntpd start"
+      stop  program = "/etc/init.d/ntpd stop"
+      if failed host 127.0.0.1 port 123 type udp then alert
+      if 5 restarts within 5 cycles then timeout
     END
     let(:params) do
       {

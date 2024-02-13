@@ -104,10 +104,10 @@ describe 'monit' do
             let(:params) { { httpd: true } }
 
             content = <<~END
-              |set httpd port 2812 and
-              |   use address localhost
-              |   allow 0.0.0.0/0.0.0.0
-              |   allow admin:monit
+              set httpd port 2812 and
+                 use address localhost
+                 allow 0.0.0.0/0.0.0.0
+                 allow admin:monit
             END
             it { is_expected.to contain_file('monit_config').with_content(%r{#{content}}) }
           end
@@ -125,10 +125,10 @@ describe 'monit' do
             end
 
             content = <<~END
-              |set httpd port 2420 and
-              |   use address otherhost
-              |   allow 0.0.0.0/0.0.0.0
-              |   allow tester:Passw0rd
+              set httpd port 2420 and
+                 use address otherhost
+                 allow 0.0.0.0/0.0.0.0
+                 allow tester:Passw0rd
             END
             it { is_expected.to contain_file('monit_config').with_content(%r{#{content}}) }
           end
@@ -232,11 +232,11 @@ describe 'monit' do
             end
 
             content = <<~END
-              |set mail-format {
-              |    from: monit@test.local
-              |    message: Monit $ACTION $SERVICE at $DATE on $HOST: $DESCRIPTION
-              |    subject: spectesting
-              |}
+              set mail-format {
+                  from: monit@test.local
+                  message: Monit $ACTION $SERVICE at $DATE on $HOST: $DESCRIPTION
+                  subject: spectesting
+              }
             END
             it { is_expected.to contain_file('monit_config').with_content(%r{#{content}}) }
           end
@@ -252,8 +252,8 @@ describe 'monit' do
             end
 
             content = <<~END
-              |set alert spec@test.local
-              |set alert tester@test.local
+              set alert spec@test.local
+              set alert tester@test.local
             END
             it { is_expected.to contain_file('monit_config').with_content(%r{#{content}}) }
           end
