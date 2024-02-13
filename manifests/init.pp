@@ -132,7 +132,6 @@ class monit (
   String                                  $service_name              = $monit::params::service_name,
   Optional[Integer[1]]                    $start_delay               = $monit::params::start_delay,
 ) inherits monit::params {
-  # <stringified variable handling>
   if $httpd =~ String {
     $httpd_bool = str2bool($httpd)
   } else {
@@ -174,12 +173,10 @@ class monit (
   } else {
     $config_dir_purge_bool = $config_dir_purge
   }
-  # </stringified variable handling>
 
   if $logfile and !($logfile =~ /^syslog(\s+facility\s+log_(local[0-7]|daemon))?/) {
     assert_type(Stdlib::Absolutepath, $logfile)
   }
-  # </variable validations>
 
   # Use the monit_version fact if available, else use the default for the
   # platform.
