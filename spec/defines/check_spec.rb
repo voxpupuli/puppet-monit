@@ -51,7 +51,7 @@ describe 'monit::check' do
   end
 
   context 'with content set to a valid value' do
-    content = <<-END.gsub(%r{^\s+\|}, '')
+    content = <<~END
       |check process ntpd with pidfile /var/run/ntpd.pid
       |start program = "/etc/init.d/ntpd start"
       |stop  program = "/etc/init.d/ntpd stop"

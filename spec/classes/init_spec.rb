@@ -103,7 +103,7 @@ describe 'monit' do
           context 'when httpd is set to valid bool <true>' do
             let(:params) { { httpd: true } }
 
-            content = <<-END.gsub(%r{^\s+\|}, '')
+            content = <<~END
               |set httpd port 2812 and
               |   use address localhost
               |   allow 0.0.0.0/0.0.0.0
@@ -124,7 +124,7 @@ describe 'monit' do
               }
             end
 
-            content = <<-END.gsub(%r{^\s+\|}, '')
+            content = <<~END
               |set httpd port 2420 and
               |   use address otherhost
               |   allow 0.0.0.0/0.0.0.0
@@ -231,7 +231,7 @@ describe 'monit' do
               }
             end
 
-            content = <<-END.gsub(%r{^\s+\|}, '')
+            content = <<~END
               |set mail-format {
               |    from: monit@test.local
               |    message: Monit $ACTION $SERVICE at $DATE on $HOST: $DESCRIPTION
@@ -251,7 +251,7 @@ describe 'monit' do
               }
             end
 
-            content = <<-END.gsub(%r{^\s+\|}, '')
+            content = <<~END
               |set alert spec@test.local
               |set alert tester@test.local
             END
