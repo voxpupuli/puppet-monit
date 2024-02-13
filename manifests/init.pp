@@ -177,7 +177,7 @@ class monit (
   # </stringified variable handling>
 
   if $logfile and !($logfile =~ /^syslog(\s+facility\s+log_(local[0-7]|daemon))?/) {
-    validate_absolute_path($logfile)
+    assert_type(Stdlib::Absolutepath, $logfile)
   }
   # </variable validations>
 
