@@ -16,6 +16,7 @@ describe 'monit::check' do
   context 'with default values for parameters' do
     it { is_expected.to compile.with_all_deps }
     it { is_expected.to contain_class('monit') }
+
     it do
       is_expected.to contain_file('/etc/monit/conf.d/test').with('ensure'  => 'present',
                                                                  'owner'   => 'root',
@@ -28,7 +29,7 @@ describe 'monit::check' do
     end
   end
 
-  ['absent', 'present'].each do |value|
+  %w[absent present].each do |value|
     context "with ensure set to valid <#{value}>" do
       let(:params) do
         {
@@ -50,12 +51,12 @@ describe 'monit::check' do
   end
 
   context 'with content set to a valid value' do
-    content = <<-END.gsub(%r{^\s+\|}, '')
-      |check process ntpd with pidfile /var/run/ntpd.pid
-      |start program = "/etc/init.d/ntpd start"
-      |stop  program = "/etc/init.d/ntpd stop"
-      |if failed host 127.0.0.1 port 123 type udp then alert
-      |if 5 restarts within 5 cycles then timeout
+    content = <<~END
+      check process ntpd with pidfile /var/run/ntpd.pid
+      start program = "/etc/init.d/ntpd start"
+      stop  program = "/etc/init.d/ntpd stop"
+      if failed host 127.0.0.1 port 123 type udp then alert
+      if 5 restarts within 5 cycles then timeout
     END
     let(:params) do
       {
@@ -103,9 +104,7 @@ describe 'monit::check' do
     end
 
     it 'fails' do
-      expect {
-        catalogue
-      }.to raise_error(Puppet::Error, %r{Parameters source and content are mutually exclusive})
+      is_expected.to compile.and_raise_error(%r{Parameters source and content are mutually exclusive})
     end
   end
 
@@ -120,14 +119,14 @@ describe 'monit::check' do
     end
     let(:validation_params) do
       {
-        #:param => 'value',
+        # :param => 'value',
       }
     end
 
     validations = {
       'regex_file_ensure' => {
         name: ['ensure'],
-        valid: ['present', 'absent'],
+        valid: %w[present absent],
         invalid: ['file', 'directory', 'link', ['array'], { 'ha' => 'sh' }, 3, 2.42, true, false, nil],
         message: 'match for Enum\[\'absent\', \'present\'\]',
       },
@@ -149,7 +148,7 @@ describe 'monit::check' do
       var[:name].each do |var_name|
         var[:valid].each do |valid|
           context "with #{var_name} (#{type}) set to valid #{valid} (as #{valid.class})" do
-            let(:params) { validation_params.merge(:"#{var_name}" => valid) }
+            let(:params) { validation_params.merge("#{var_name}": valid) }
 
             it { is_expected.to compile }
           end
@@ -157,12 +156,10 @@ describe 'monit::check' do
 
         var[:invalid].each do |invalid|
           context "with #{var_name} (#{type}) set to invalid #{invalid} (as #{invalid.class})" do
-            let(:params) { validation_params.merge(:"#{var_name}" => invalid) }
+            let(:params) { validation_params.merge("#{var_name}": invalid) }
 
             it 'fails' do
-              expect {
-                catalogue
-              }.to raise_error(Puppet::PreformattedError, %r{expects a #{var[:message]}})
+              is_expected.to compile.and_raise_error(%r{expects a #{var[:message]}})
             end
           end
         end

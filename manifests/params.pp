@@ -30,8 +30,7 @@ class monit::params {
   $mmonit_password           = 'monit'
   $mmonit_without_credential = false
 
-  # <OS family handling>
-  case $::osfamily {
+  case $facts['osfamily'] {
     'Debian': {
       $config_file   = '/etc/monit/monitrc'
       $config_dir    = '/etc/monit/conf.d'
@@ -43,7 +42,7 @@ class monit::params {
       $config_dir        = '/etc/monit.d'
       $service_hasstatus = true
 
-      case $::operatingsystem {
+      case $facts['os']['name'] {
         'Amazon': {
           $monit_version = '5'
           $config_file   = '/etc/monit.conf'
@@ -55,7 +54,7 @@ class monit::params {
       }
     }
     default: {
-      fail("monit supports osfamilies Debian and RedHat. Detected osfamily is <${::osfamily}>.")
+      fail("monit supports osfamilies Debian and RedHat. Detected osfamily is <${facts['os']['family']}>.")
     }
   }
   # </OS family handling>

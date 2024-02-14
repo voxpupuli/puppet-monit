@@ -187,20 +187,16 @@ class monit (
 
   # Use the monit_version fact if available, else use the default for the
   # platform.
-  if defined('$::monit_version') and $::monit_version {
-    $monit_version_real = $::monit_version
-  } else {
-    $monit_version_real = $monit::params::monit_version
-  }
+  $monit_version_real = pick($facts['monit_version'], $monit::params::monit_version)
 
   if($start_delay and $start_delay > 0 and versioncmp($monit_version_real,'5') < 0) {
     fail("start_delay requires at least Monit 5.0. Detected version is <${monit_version_real}>.")
   }
 
-  anchor { "${module_name}::begin": }
-  -> class { "${module_name}::install": }
-  -> class { "${module_name}::config": }
-  ~> class { "${module_name}::service": }
-  -> class { "${module_name}::firewall": }
-  -> anchor { "${module_name}::end": }
+  contain "${module_name}::install"
+  contain "${module_name}::config"
+  contain "${module_name}::service"
+  contain "${module_name}::firewall"
+
+  Class["${module_name}::install"] -> Class["${module_name}::config"] ~> Class["${module_name}::service"] -> Class["${module_name}::firewall"]
 }
