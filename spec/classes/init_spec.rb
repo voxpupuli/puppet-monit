@@ -6,7 +6,7 @@ describe 'monit' do
       context "on #{os}" do
         let(:facts) { facts }
 
-        case facts[:osfamily]
+        case facts[:os]['family']
         when 'Debian'
           config_file = '/etc/monit/monitrc'
           config_dir  = '/etc/monit/conf.d'
@@ -17,7 +17,7 @@ describe 'monit' do
           config_dir        = '/etc/monit.d'
           service_hasstatus = true
           monit_version     = '5'
-          config_file = case facts[:operatingsystem]
+          config_file = case facts[:os]['name']
                         when 'Amazon'
                           '/etc/monit.conf'
                         else
@@ -64,14 +64,14 @@ describe 'monit' do
         end
 
         monit_config_fixture = if monit_version == '4'
-                                 File.read(fixtures("monitrc.4.#{facts[:osfamily]}"))
+                                 File.read(fixtures("monitrc.4.#{facts[:os]['family']}"))
                                else
-                                 File.read(fixtures("monitrc.#{facts[:osfamily]}"))
+                                 File.read(fixtures("monitrc.#{facts[:os]['family']}"))
                                end
 
         it { is_expected.to contain_file('monit_config').with_content(monit_config_fixture) }
 
-        if facts[:osfamily] == 'Debian'
+        if facts[:os]['family'] == 'Debian'
           it do
             is_expected.to contain_file('/etc/default/monit').with('notify' => 'Service[monit]').
               with_content(%r{^#{default_file_content}$})

@@ -30,7 +30,7 @@ class monit::params {
   $mmonit_password           = 'monit'
   $mmonit_without_credential = false
 
-  case $facts['osfamily'] {
+  case $facts['os']['family'] {
     'Debian': {
       $config_file   = '/etc/monit/monitrc'
       $config_dir    = '/etc/monit/conf.d'
@@ -57,5 +57,4 @@ class monit::params {
       fail("monit supports osfamilies Debian and RedHat. Detected osfamily is <${facts['os']['family']}>.")
     }
   }
-  # </OS family handling>
 }
