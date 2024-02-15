@@ -8,7 +8,7 @@ class monit::service inherits monit {
     fail("Use of private class ${name} by ${caller_module_name}")
   }
 
-  if $monit::service_manage_bool {
+  if $monit::service_manage {
     if $facts['osfamily'] == 'Debian' {
       file { '/etc/default/monit':
         content => $monit::default_file_content,
