@@ -103,7 +103,7 @@ Default value: `$monit::params::config_dir`
 
 ##### <a name="-monit--config_dir_purge"></a>`config_dir_purge`
 
-Data type: `Variant[Boolean, Enum['true', 'false']]`
+Data type: `Boolean`
 
 Specifies if unmanaged files in the config directory should be purged. Default value: 'false'
 
@@ -111,7 +111,7 @@ Default value: `$monit::params::config_dir_purge`
 
 ##### <a name="-monit--httpd"></a>`httpd`
 
-Data type: `Variant[Boolean, Enum['true', 'false']]`
+Data type: `Boolean`
 
 Specifies whether to enable the Monit Dashboard. Default value: 'false'
 
@@ -186,7 +186,7 @@ Default value: `$monit::params::mailformat`
 
 ##### <a name="-monit--manage_firewall"></a>`manage_firewall`
 
-Data type: `Variant[Boolean, Enum['true', 'false']]`
+Data type: `Boolean`
 
 If true and if puppetlabs-firewall module is present, Puppet manages firewall to allow HTTP access for Monit Dashboard.
 Default value: 'false'
@@ -205,7 +205,7 @@ Default value: `$monit::params::mmonit_address`
 
 ##### <a name="-monit--mmonit_https"></a>`mmonit_https`
 
-Data type: `Variant[Boolean, Enum['true', 'false']]`
+Data type: `Boolean`
 
 *Requires at least Monit 5.0*<br />
 Specifies wheither the protocol of the M/Monit server is HTTPs. Default value: 'true'
@@ -243,7 +243,7 @@ Default value: `$monit::params::mmonit_password`
 
 ##### <a name="-monit--mmonit_without_credential"></a>`mmonit_without_credential`
 
-Data type: `Variant[Boolean, Enum['true', 'false']]`
+Data type: `Boolean`
 
 *Requires at least Monit 5.0*<br />
 By default Monit registers credentials with M/Monit so M/Monit can smoothly communicate back to Monit and you don't have to register
@@ -280,7 +280,7 @@ Default value: `$monit::params::service_ensure`
 
 ##### <a name="-monit--service_manage"></a>`service_manage`
 
-Data type: `Variant[Boolean, Enum['true', 'false']]`
+Data type: `Boolean`
 
 Tells Puppet whether to manage the Monit service. Default value: 'true'
 
@@ -305,7 +305,7 @@ Default value: `$monit::params::start_delay`
 
 ##### <a name="-monit--service_enable"></a>`service_enable`
 
-Data type: `Variant[Boolean, Enum['true', 'false']]`
+Data type: `Boolean`
 
 
 
