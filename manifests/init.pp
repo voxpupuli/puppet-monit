@@ -123,7 +123,7 @@ class monit (
   Integer[1, 65535]                       $mmonit_port               = $monit::params::mmonit_port,
   String                                  $mmonit_user               = $monit::params::mmonit_user,
   String                                  $mmonit_password           = $monit::params::mmonit_password,
-  Variant[Boolean, Enum['true', 'false']] $mmonit_without_credential = $monit::params::mmonit_without_credential,
+  Boolean                                 $mmonit_without_credential = $monit::params::mmonit_without_credential,
   String                                  $package_ensure            = $monit::params::package_ensure,
   String                                  $package_name              = $monit::params::package_name,
   Boolean                                 $service_enable            = $monit::params::service_enable,
@@ -132,12 +132,6 @@ class monit (
   String                                  $service_name              = $monit::params::service_name,
   Optional[Integer[1]]                    $start_delay               = $monit::params::start_delay,
 ) inherits monit::params {
-
-  if $mmonit_without_credential =~ String {
-    $mmonit_without_credential_bool = str2bool($mmonit_without_credential)
-  } else {
-    $mmonit_without_credential_bool = $mmonit_without_credential
-  }
 
   if $config_dir_purge =~ String {
     $config_dir_purge_bool = str2bool($config_dir_purge)
