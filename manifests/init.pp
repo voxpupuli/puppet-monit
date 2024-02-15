@@ -128,16 +128,10 @@ class monit (
   String                                  $package_name              = $monit::params::package_name,
   Boolean                                 $service_enable            = $monit::params::service_enable,
   Enum['running', 'stopped']              $service_ensure            = $monit::params::service_ensure,
-  Variant[Boolean, Enum['true', 'false']] $service_manage            = $monit::params::service_manage,
+  Boolean                                 $service_manage            = $monit::params::service_manage,
   String                                  $service_name              = $monit::params::service_name,
   Optional[Integer[1]]                    $start_delay               = $monit::params::start_delay,
 ) inherits monit::params {
-
-  if $service_manage =~ String {
-    $service_manage_bool = str2bool($service_manage)
-  } else {
-    $service_manage_bool = $service_manage
-  }
 
   if $mmonit_https =~ String {
     $mmonit_https_bool = str2bool($mmonit_https)
