@@ -117,7 +117,7 @@ class monit (
   Optional[String]                        $logfile                   = $monit::params::logfile,
   Optional[String]                        $mailserver                = $monit::params::mailserver,
   Optional[Hash]                          $mailformat                = $monit::params::mailformat,
-  Variant[Boolean, Enum['true', 'false']] $manage_firewall           = $monit::params::manage_firewall,
+  Boolean                                 $manage_firewall           = $monit::params::manage_firewall,
   Optional[String]                        $mmonit_address            = $monit::params::mmonit_address,
   Variant[Boolean, Enum['true', 'false']] $mmonit_https              = $monit::params::mmonit_https,
   Integer[1, 65535]                       $mmonit_port               = $monit::params::mmonit_port,
@@ -132,12 +132,6 @@ class monit (
   String                                  $service_name              = $monit::params::service_name,
   Optional[Integer[1]]                    $start_delay               = $monit::params::start_delay,
 ) inherits monit::params {
-
-  if $manage_firewall =~ String {
-    $manage_firewall_bool = str2bool($manage_firewall)
-  } else {
-    $manage_firewall_bool = $manage_firewall
-  }
 
   if $service_enable =~ String {
     $service_enable_bool = str2bool($service_enable)
