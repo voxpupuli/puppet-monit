@@ -108,7 +108,7 @@ class monit (
   Stdlib::Absolutepath                    $config_file               = $monit::params::config_file,
   Stdlib::Absolutepath                    $config_dir                = $monit::params::config_dir,
   Variant[Boolean, Enum['true', 'false']] $config_dir_purge          = $monit::params::config_dir_purge,
-  Variant[Boolean, Enum['true', 'false']] $httpd                     = $monit::params::httpd,
+  Boolean                                 $httpd                     = $monit::params::httpd,
   Integer[1, 65535]                       $httpd_port                = $monit::params::httpd_port,
   String                                  $httpd_address             = $monit::params::httpd_address,
   String                                  $httpd_allow               = $monit::params::httpd_allow,
@@ -132,11 +132,6 @@ class monit (
   String                                  $service_name              = $monit::params::service_name,
   Optional[Integer[1]]                    $start_delay               = $monit::params::start_delay,
 ) inherits monit::params {
-  if $httpd =~ String {
-    $httpd_bool = str2bool($httpd)
-  } else {
-    $httpd_bool = $httpd
-  }
 
   if $manage_firewall =~ String {
     $manage_firewall_bool = str2bool($manage_firewall)
