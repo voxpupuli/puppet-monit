@@ -107,7 +107,7 @@ class monit (
   Integer[1]                              $check_interval            = $monit::params::check_interval,
   Stdlib::Absolutepath                    $config_file               = $monit::params::config_file,
   Stdlib::Absolutepath                    $config_dir                = $monit::params::config_dir,
-  Variant[Boolean, Enum['true', 'false']] $config_dir_purge          = $monit::params::config_dir_purge,
+  Boolean                                 $config_dir_purge          = $monit::params::config_dir_purge,
   Boolean                                 $httpd                     = $monit::params::httpd,
   Integer[1, 65535]                       $httpd_port                = $monit::params::httpd_port,
   String                                  $httpd_address             = $monit::params::httpd_address,
@@ -132,12 +132,6 @@ class monit (
   String                                  $service_name              = $monit::params::service_name,
   Optional[Integer[1]]                    $start_delay               = $monit::params::start_delay,
 ) inherits monit::params {
-
-  if $config_dir_purge =~ String {
-    $config_dir_purge_bool = str2bool($config_dir_purge)
-  } else {
-    $config_dir_purge_bool = $config_dir_purge
-  }
 
   if $logfile and !($logfile =~ /^syslog(\s+facility\s+log_(local[0-7]|daemon))?/) {
     assert_type(Stdlib::Absolutepath, $logfile)
