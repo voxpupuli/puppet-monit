@@ -41,17 +41,8 @@ class monit::params {
     'RedHat': {
       $config_dir        = '/etc/monit.d'
       $service_hasstatus = true
-
-      case $facts['os']['name'] {
-        'Amazon': {
-          $monit_version = '5'
-          $config_file   = '/etc/monit.conf'
-        }
-        default: {
-          $monit_version = '5'
-          $config_file   = '/etc/monitrc'
-        }
-      }
+      $monit_version = '5'
+      $config_file   = '/etc/monitrc'
     }
     default: {
       fail("monit supports osfamilies Debian and RedHat. Detected osfamily is <${facts['os']['family']}>.")
