@@ -12,18 +12,23 @@ describe 'monit::check' do
         facts
       end
 
-      confdir = if facts[:os]['family'] == 'RedHat'
-                  '/etc/monit.d'
-                else
-                  '/etc/monit/conf.d'
-                end
+      case facts[:os]['family']
+      when 'Debian'
+        config_dir = '/etc/monit/conf.d'
+      when 'RedHat'
+        config_dir = '/etc/monit.d'
+      when 'FreeBSD'
+        config_dir = '/usr/local/etc/monit.d'
+      else
+        raise 'unsupported osfamily detected'
+      end
 
       context 'with default values for parameters' do
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_class('monit') }
 
         it do
-          is_expected.to contain_file("#{confdir}/test").with('ensure' => 'present',
+          is_expected.to contain_file("#{config_dir}/test").with('ensure' => 'present',
                                                               'owner' => 'root',
                                                               'group' => 'root',
                                                               'mode' => '0644',
@@ -43,7 +48,7 @@ describe 'monit::check' do
           end
 
           it do
-            is_expected.to contain_file("#{confdir}/test").with('ensure' => value,
+            is_expected.to contain_file("#{config_dir}/test").with('ensure' => value,
                                                                 'owner' => 'root',
                                                                 'group' => 'root',
                                                                 'mode' => '0644',
@@ -70,7 +75,7 @@ describe 'monit::check' do
         end
 
         it do
-          is_expected.to contain_file("#{confdir}/test").with('ensure' => 'present',
+          is_expected.to contain_file("#{config_dir}/test").with('ensure' => 'present',
                                                               'owner' => 'root',
                                                               'group' => 'root',
                                                               'mode' => '0644',
@@ -89,7 +94,7 @@ describe 'monit::check' do
         end
 
         it do
-          is_expected.to contain_file("#{confdir}/test").with('ensure' => 'present',
+          is_expected.to contain_file("#{config_dir}/test").with('ensure' => 'present',
                                                               'owner' => 'root',
                                                               'group' => 'root',
                                                               'mode' => '0644',
