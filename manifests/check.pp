@@ -29,7 +29,7 @@ define monit::check (
   file { "${monit::config_dir}/${name}":
     ensure  => $ensure,
     owner   => 'root',
-    group   => 'root',
+    group   => $monit::root_group,
     mode    => '0644',
     source  => $source,
     content => $content,

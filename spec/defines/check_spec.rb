@@ -15,10 +15,13 @@ describe 'monit::check' do
       case facts[:os]['family']
       when 'Debian'
         config_dir = '/etc/monit/conf.d'
+        root_group = 'root'
       when 'RedHat'
         config_dir = '/etc/monit.d'
+        root_group = 'root'
       when 'FreeBSD'
         config_dir = '/usr/local/etc/monit.d'
+        root_group = 'wheel'
       else
         raise 'unsupported osfamily detected'
       end
@@ -30,7 +33,7 @@ describe 'monit::check' do
         it do
           is_expected.to contain_file("#{config_dir}/test").with('ensure' => 'present',
                                                                  'owner' => 'root',
-                                                                 'group' => 'root',
+                                                                 'group' => root_group,
                                                                  'mode' => '0644',
                                                                  'source' => nil,
                                                                  'content' => nil,
@@ -50,7 +53,7 @@ describe 'monit::check' do
           it do
             is_expected.to contain_file("#{config_dir}/test").with('ensure' => value,
                                                                    'owner' => 'root',
-                                                                   'group' => 'root',
+                                                                   'group' => root_group,
                                                                    'mode' => '0644',
                                                                    'source' => nil,
                                                                    'content' => nil,
@@ -77,7 +80,7 @@ describe 'monit::check' do
         it do
           is_expected.to contain_file("#{config_dir}/test").with('ensure' => 'present',
                                                                  'owner' => 'root',
-                                                                 'group' => 'root',
+                                                                 'group' => root_group,
                                                                  'mode' => '0644',
                                                                  'source' => nil,
                                                                  'content' => content,
@@ -96,7 +99,7 @@ describe 'monit::check' do
         it do
           is_expected.to contain_file("#{config_dir}/test").with('ensure' => 'present',
                                                                  'owner' => 'root',
-                                                                 'group' => 'root',
+                                                                 'group' => root_group,
                                                                  'mode' => '0644',
                                                                  'source' => 'puppet:///modules/monit/ntp',
                                                                  'content' => nil,
