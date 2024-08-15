@@ -37,12 +37,24 @@ class monit::params {
       $monit_version = '5'
       $default_file_content = 'START=yes'
       $service_hasstatus    = true
+      $state_dir            = '/var/lib/monit'
+      $root_group           = 'root'
     }
     'RedHat': {
       $config_dir        = '/etc/monit.d'
       $service_hasstatus = true
       $monit_version = '5'
       $config_file   = '/etc/monitrc'
+      $state_dir      = '/var/lib/monit'
+      $root_group           = 'root'
+    }
+    'FreeBSD':{
+      $config_dir        = '/usr/local/etc/monit.d'
+      $service_hasstatus = true
+      $monit_version = '5'
+      $config_file   = '/usr/local/etc/monitrc'
+      $state_dir      = '/var/tmp/monit'
+      $root_group           = 'wheel'
     }
     default: {
       fail("monit supports osfamilies Debian and RedHat. Detected osfamily is <${facts['os']['family']}>.")
