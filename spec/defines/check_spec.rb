@@ -29,13 +29,13 @@ describe 'monit::check' do
 
         it do
           is_expected.to contain_file("#{config_dir}/test").with('ensure' => 'present',
-                                                              'owner' => 'root',
-                                                              'group' => 'root',
-                                                              'mode' => '0644',
-                                                              'source' => nil,
-                                                              'content' => nil,
-                                                              'notify' => 'Service[monit]',
-                                                              'require' => 'Package[monit]')
+                                                                 'owner' => 'root',
+                                                                 'group' => 'root',
+                                                                 'mode' => '0644',
+                                                                 'source' => nil,
+                                                                 'content' => nil,
+                                                                 'notify' => 'Service[monit]',
+                                                                 'require' => 'Package[monit]')
         end
       end
 
@@ -49,13 +49,13 @@ describe 'monit::check' do
 
           it do
             is_expected.to contain_file("#{config_dir}/test").with('ensure' => value,
-                                                                'owner' => 'root',
-                                                                'group' => 'root',
-                                                                'mode' => '0644',
-                                                                'source' => nil,
-                                                                'content' => nil,
-                                                                'notify' => 'Service[monit]',
-                                                                'require' => 'Package[monit]')
+                                                                   'owner' => 'root',
+                                                                   'group' => 'root',
+                                                                   'mode' => '0644',
+                                                                   'source' => nil,
+                                                                   'content' => nil,
+                                                                   'notify' => 'Service[monit]',
+                                                                   'require' => 'Package[monit]')
           end
         end
       end
@@ -76,13 +76,13 @@ describe 'monit::check' do
 
         it do
           is_expected.to contain_file("#{config_dir}/test").with('ensure' => 'present',
-                                                              'owner' => 'root',
-                                                              'group' => 'root',
-                                                              'mode' => '0644',
-                                                              'source' => nil,
-                                                              'content' => content,
-                                                              'notify' => 'Service[monit]',
-                                                              'require' => 'Package[monit]')
+                                                                 'owner' => 'root',
+                                                                 'group' => 'root',
+                                                                 'mode' => '0644',
+                                                                 'source' => nil,
+                                                                 'content' => content,
+                                                                 'notify' => 'Service[monit]',
+                                                                 'require' => 'Package[monit]')
         end
       end
 
@@ -95,13 +95,13 @@ describe 'monit::check' do
 
         it do
           is_expected.to contain_file("#{config_dir}/test").with('ensure' => 'present',
-                                                              'owner' => 'root',
-                                                              'group' => 'root',
-                                                              'mode' => '0644',
-                                                              'source' => 'puppet:///modules/monit/ntp',
-                                                              'content' => nil,
-                                                              'notify' => 'Service[monit]',
-                                                              'require' => 'Package[monit]')
+                                                                 'owner' => 'root',
+                                                                 'group' => 'root',
+                                                                 'mode' => '0644',
+                                                                 'source' => 'puppet:///modules/monit/ntp',
+                                                                 'content' => nil,
+                                                                 'notify' => 'Service[monit]',
+                                                                 'require' => 'Package[monit]')
         end
       end
 

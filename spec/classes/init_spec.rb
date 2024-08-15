@@ -49,10 +49,10 @@ describe 'monit' do
 
         it do
           is_expected.to contain_file('monit_state_dir').with('ensure' => 'directory',
-                                                             'path'   => state_dir,
-                                                             'owner'  => 'root',
-                                                             'group'  => root_group,
-                                                             'mode'   => '0755')
+                                                              'path' => state_dir,
+                                                              'owner' => 'root',
+                                                              'group' => root_group,
+                                                              'mode' => '0755')
         end
 
         it do
