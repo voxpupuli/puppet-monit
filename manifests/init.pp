@@ -37,6 +37,15 @@
 # @param httpd_password
 #   Specifies the password to access the Monit Dashboard. Default value: 'monit'
 #
+# @param httpd_htpasswd_file
+#   Specifies the path to the htpasswd file. Default value: ''
+#
+# @httpd_htpasswd_crypto
+#   Specifies the encryption method in the htpasswd file. Default value: `md5`
+#
+# @httpd_htpasswd_users
+#   An array of users to be managed in the htpasswd file. Default value: []
+#
 # @param logfile
 #   Specifies the logfile directive value. Default value: '/var/log/monit.log'
 #   It is possible to use syslog instead of direct file logging. (e.g. 'syslog facility log\_daemon')
