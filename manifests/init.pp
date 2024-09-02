@@ -40,10 +40,10 @@
 # @param httpd_htpasswd_file
 #   Specifies the path to the htpasswd file. Default value: ''
 #
-# @httpd_htpasswd_crypto
+# @param httpd_htpasswd_crypto
 #   Specifies the encryption method in the htpasswd file. Default value: `md5`
 #
-# @httpd_htpasswd_users
+# @param httpd_htpasswd_users
 #   An array of users to be managed in the htpasswd file. Default value: []
 #
 # @param logfile
