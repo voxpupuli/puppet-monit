@@ -107,8 +107,8 @@ class monit (
   Integer[1]                              $check_interval            = $monit::params::check_interval,
   Stdlib::Absolutepath                    $config_file               = $monit::params::config_file,
   Stdlib::Absolutepath                    $config_dir                = $monit::params::config_dir,
-  Variant[Boolean, Enum['true', 'false']] $config_dir_purge          = $monit::params::config_dir_purge,
-  Variant[Boolean, Enum['true', 'false']] $httpd                     = $monit::params::httpd,
+  Boolean                                 $config_dir_purge          = $monit::params::config_dir_purge,
+  Boolean                                 $httpd                     = $monit::params::httpd,
   Integer[1, 65535]                       $httpd_port                = $monit::params::httpd_port,
   String                                  $httpd_address             = $monit::params::httpd_address,
   String                                  $httpd_allow               = $monit::params::httpd_allow,
@@ -120,99 +120,37 @@ class monit (
   Optional[String]                        $logfile                   = $monit::params::logfile,
   Optional[String]                        $mailserver                = $monit::params::mailserver,
   Optional[Hash]                          $mailformat                = $monit::params::mailformat,
-  Variant[Boolean, Enum['true', 'false']] $manage_firewall           = $monit::params::manage_firewall,
+  Boolean                                 $manage_firewall           = $monit::params::manage_firewall,
   Optional[String]                        $mmonit_address            = $monit::params::mmonit_address,
-  Variant[Boolean, Enum['true', 'false']] $mmonit_https              = $monit::params::mmonit_https,
+  Boolean                                 $mmonit_https              = $monit::params::mmonit_https,
   Integer[1, 65535]                       $mmonit_port               = $monit::params::mmonit_port,
   String                                  $mmonit_user               = $monit::params::mmonit_user,
   String                                  $mmonit_password           = $monit::params::mmonit_password,
-  Variant[Boolean, Enum['true', 'false']] $mmonit_without_credential = $monit::params::mmonit_without_credential,
+  Boolean                                 $mmonit_without_credential = $monit::params::mmonit_without_credential,
   String                                  $package_ensure            = $monit::params::package_ensure,
   String                                  $package_name              = $monit::params::package_name,
-  Variant[Boolean, Enum['true', 'false']] $service_enable            = $monit::params::service_enable,
+  Boolean                                 $service_enable            = $monit::params::service_enable,
   Enum['running', 'stopped']              $service_ensure            = $monit::params::service_ensure,
-  Variant[Boolean, Enum['true', 'false']] $service_manage            = $monit::params::service_manage,
+  Boolean                                 $service_manage            = $monit::params::service_manage,
   String                                  $service_name              = $monit::params::service_name,
   Optional[Integer[1]]                    $start_delay               = $monit::params::start_delay,
 ) inherits monit::params {
-
-  $httpd_bool = $httpd ? {
-    true    => true,
-    false   => false,
-    'true'  => true,
-    'false' => false,
-    default => $httpd,
-  }
-
-  $manage_firewall_bool = $manage_firewall ? {
-    true    => true,
-    false   => false,
-    'true'  => true,
-    'false' => false,
-    default => $manage_firewall,
-  }
-
-  $service_enable_bool = $service_enable ? {
-    true    => true,
-    false   => false,
-    'true'  => true,
-    'false' => false,
-    default => $service_enable,
-  }
-
-  $service_manage_bool = $service_manage ? {
-    true    => true,
-    false   => false,
-    'true'  => true,
-    'false' => false,
-    default => $service_manage,
-  }
-
-  $mmonit_https_bool = $mmonit_https ? {
-    true    => true,
-    false   => false,
-    'true'  => true,
-    'false' => false,
-    default => $mmonit_https,
-  }
-
-  $mmonit_without_credential_bool = $mmonit_without_credential ? {
-    true    => true,
-    false   => false,
-    'true'  => true,
-    'false' => false,
-    default => $mmonit_without_credential,
-  }
-
-  $config_dir_purge_bool = $config_dir_purge ? {
-    true    => true,
-    false   => false,
-    'true'  => true,
-    'false' => false,
-    default => $config_dir_purge,
-  }
-
   if $logfile and !($logfile =~ /^syslog(\s+facility\s+log_(local[0-7]|daemon))?/) {
     assert_type(Stdlib::Absolutepath, $logfile)
-
   }
 
   # Use the monit_version fact if available, else use the default for the
   # platform.
-  if defined('$::monit_version') and $facts['monit_version'] {
-    $monit_version_real = $facts['monit_version']
-  } else {
-    $monit_version_real = $monit::params::monit_version
-  }
+  $monit_version_real = pick($facts['monit_version'], $monit::params::monit_version)
 
   if($start_delay and $start_delay > 0 and versioncmp($monit_version_real,'5') < 0) {
     fail("start_delay requires at least Monit 5.0. Detected version is <${monit_version_real}>.")
   }
 
-  anchor { "${module_name}::begin": }
-  -> class { "${module_name}::install": }
-  -> class { "${module_name}::config": }
-  ~> class { "${module_name}::service": }
-  -> class { "${module_name}::firewall": }
-  -> anchor { "${module_name}::end": }
+  contain "${module_name}::install"
+  contain "${module_name}::config"
+  contain "${module_name}::service"
+  contain "${module_name}::firewall"
+
+  Class["${module_name}::install"] -> Class["${module_name}::config"] ~> Class["${module_name}::service"] -> Class["${module_name}::firewall"]
 }

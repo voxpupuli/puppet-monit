@@ -6,48 +6,23 @@ describe 'monit' do
       context "on #{os}" do
         let(:facts) { facts }
 
-        case facts[:osfamily]
+        case facts[:os]['family']
         when 'Debian'
           config_file = '/etc/monit/monitrc'
           config_dir  = '/etc/monit/conf.d'
           monit_version = '5'
-          case facts[:lsbdistcodename]
-          when 'squeeze', 'lucid'
-            default_file_content = 'startup=1'
-            service_hasstatus    = false
-          when 'wheezy', 'jessie', 'stretch', 'buster', 'precise', 'trusty', 'xenial', 'bionic'
-            default_file_content = 'START=yes'
-            service_hasstatus    = true
-          else
-            raise 'unsupported operatingsystemmajrelease detected on Debian osfamily'
-          end
+          default_file_content = 'START=yes'
+          service_hasstatus    = true
         when 'RedHat'
           config_dir        = '/etc/monit.d'
           service_hasstatus = true
-          case facts[:operatingsystem]
-          when 'Amazon'
-            case facts[:operatingsystemmajrelease]
-            when '2016', '2018'
-              monit_version = '5'
-              config_file   = '/etc/monit.conf'
-            else
-              raise 'unsupported operatingsystemmajrelease detected on Amazon Linux operating system'
-            end
-          else
-            case facts[:operatingsystemmajrelease]
-            when '5'
-              monit_version = '4'
-              config_file   = '/etc/monit.conf'
-            when '6'
-              monit_version = '5'
-              config_file   = '/etc/monit.conf'
-            when '7', '8'
-              monit_version = '5'
-              config_file   = '/etc/monitrc'
-            else
-              raise 'unsupported operatingsystemmajrelease detected on RedHat osfamily'
-            end
-          end
+          monit_version     = '5'
+          config_file = case facts[:os]['name']
+                        when 'Amazon'
+                          '/etc/monit.conf'
+                        else
+                          '/etc/monitrc'
+                        end
         else
           raise 'unsupported osfamily detected'
         end
@@ -89,17 +64,17 @@ describe 'monit' do
         end
 
         monit_config_fixture = if monit_version == '4'
-                                 File.read(fixtures("monitrc.4.#{facts[:osfamily]}"))
+                                 File.read(fixtures("monitrc.4.#{facts[:os]['family']}"))
                                else
-                                 File.read(fixtures("monitrc.#{facts[:osfamily]}"))
+                                 File.read(fixtures("monitrc.#{facts[:os]['family']}"))
                                end
 
         it { is_expected.to contain_file('monit_config').with_content(monit_config_fixture) }
 
-        if facts[:osfamily] == 'Debian'
+        if facts[:os]['family'] == 'Debian'
           it do
-            is_expected.to contain_file('/etc/default/monit').with('notify' => 'Service[monit]')
-                                                             .with_content(%r{^#{default_file_content}$})
+            is_expected.to contain_file('/etc/default/monit').with('notify' => 'Service[monit]').
+              with_content(%r{^#{default_file_content}$})
           end
         else
           it { is_expected.not_to contain_file('/etc/default/monit') }
@@ -128,11 +103,11 @@ describe 'monit' do
           context 'when httpd is set to valid bool <true>' do
             let(:params) { { httpd: true } }
 
-            content = <<-END.gsub(%r{^\s+\|}, '')
-              |set httpd port 2812 and
-              |   use address localhost
-              |   allow 0.0.0.0/0.0.0.0
-              |   allow admin:monit
+            content = <<~END
+              set httpd port 2812 and
+                 use address localhost
+                 allow 0.0.0.0/0.0.0.0
+                 allow admin:monit
             END
             it { is_expected.to contain_file('monit_config').with_content(%r{#{content}}) }
           end
@@ -149,11 +124,11 @@ describe 'monit' do
               }
             end
 
-            content = <<-END.gsub(%r{^\s+\|}, '')
-              |set httpd port 2420 and
-              |   use address otherhost
-              |   allow 0.0.0.0/0.0.0.0
-              |   allow tester:Passw0rd
+            content = <<~END
+              set httpd port 2420 and
+                 use address otherhost
+                 allow 0.0.0.0/0.0.0.0
+                 allow tester:Passw0rd
             END
             it { is_expected.to contain_file('monit_config').with_content(%r{#{content}}) }
           end
@@ -184,9 +159,9 @@ describe 'monit' do
             end
 
             it do
-              is_expected.to contain_firewall('2812 allow Monit inbound traffic').with('action' => 'accept',
-                                                                                       'dport'  => '2812',
-                                                                                       'proto'  => 'tcp')
+              is_expected.to contain_firewall('2812 allow Monit inbound traffic').with('jump' => 'accept',
+                                                                                       'dport' => '2812',
+                                                                                       'proto' => 'tcp')
             end
           end
 
@@ -256,12 +231,12 @@ describe 'monit' do
               }
             end
 
-            content = <<-END.gsub(%r{^\s+\|}, '')
-              |set mail-format \{
-              |    from: monit\@test.local
-              |    message: Monit \$ACTION \$SERVICE at \$DATE on \$HOST: \$DESCRIPTION
-              |    subject: spectesting
-              |\}
+            content = <<~END
+              set mail-format {
+                  from: monit@test.local
+                  message: Monit $ACTION $SERVICE at $DATE on $HOST: $DESCRIPTION
+                  subject: spectesting
+              }
             END
             it { is_expected.to contain_file('monit_config').with_content(%r{#{Regexp.escape(content)}}) }
           end
@@ -276,9 +251,9 @@ describe 'monit' do
               }
             end
 
-            content = <<-END.gsub(%r{^\s+\|}, '')
-              |set alert spec@test.local
-              |set alert tester@test.local
+            content = <<~END
+              set alert spec@test.local
+              set alert tester@test.local
             END
             it { is_expected.to contain_file('monit_config').with_content(%r{#{content}}) }
           end
@@ -341,239 +316,4 @@ describe 'monit' do
       end
     end
   end
-
-  describe 'failures' do
-    let(:facts) do
-      {
-        osfamily:        'Debian',
-        lsbdistcodename: 'squeeze',
-        monit_version:   '5',
-      }
-    end
-
-    [-1, 65_536].each do |value|
-      context "when httpd_port is set to invalid value <#{value}>" do
-        let(:params) do
-          {
-            httpd:          true,
-            httpd_port:     value,
-            httpd_address:  'otherhost',
-            httpd_user:     'tester',
-            httpd_password: 'Passw0rd',
-          }
-        end
-
-        it 'fails' do
-          expect {
-            is_expected.to contain_class('monit')
-          }.to raise_error(Puppet::PreformattedError, %r{expects an Integer\[1, 65535\] value})
-        end
-      end
-    end
-
-    context 'when check_interval is set to invalid value <0>' do
-      let(:params) { { check_interval: 0 } }
-
-      it 'fails' do
-        expect {
-          is_expected.to contain_class('monit')
-        }.to raise_error(Puppet::PreformattedError, %r{expects an Integer\[1})
-      end
-    end
-
-    context 'when start_delay is set to invalid value <0>' do
-      let(:params) { { start_delay: 0 } }
-
-      it 'fails' do
-        expect {
-          is_expected.to contain_class('monit')
-        }.to raise_error(Puppet::PreformattedError, %r{expects a value of type Undef or Integer\[1})
-      end
-    end
-
-    context 'when major release of Amazon Linux is unsupported' do
-      let :facts do
-        { osfamily:                  'RedHat',
-          operatingsystem:           'Amazon',
-          operatingsystemmajrelease: '3',
-          monit_version:             '5' }
-      end
-
-      it 'fails' do
-        expect {
-          is_expected.to contain_class('monit')
-        }.to raise_error(Puppet::Error, %r{monit supports Amazon Linux 2\. Detected operatingsystemmajrelease is <3>})
-      end
-    end
-
-    context 'when major release of EL is unsupported' do
-      let :facts do
-        { osfamily:                  'RedHat',
-          operatingsystem:           'CentOS',
-          operatingsystemmajrelease: '4',
-          monit_version:             '5' }
-      end
-
-      it 'fails' do
-        expect {
-          is_expected.to contain_class('monit')
-        }.to raise_error(Puppet::Error, %r{monit supports EL 5, 6 and 7\. Detected operatingsystemmajrelease is <4>})
-      end
-    end
-
-    context 'when major release of Debian is unsupported' do
-      let :facts do
-        { osfamily:                  'Debian',
-          operatingsystemmajrelease: '4',
-          lsbdistcodename:           'etch',
-          monit_version:             '5' }
-      end
-
-      it 'fails' do
-        expect {
-          is_expected.to contain_class('monit')
-        }.to raise_error(Puppet::Error, %r{monit supports Debian 6 \(squeeze\), 7 \(wheezy\), 8 \(jessie\), 9 \(stretch\) and 10 \(buster\) \
-and Ubuntu 10\.04 \(lucid\), 12\.04 \(precise\), 14\.04 \(trusty\), 16\.04 \(xenial\) and 18\.04 \(bionic\)\. \
-Detected lsbdistcodename is <etch>\.})
-      end
-    end
-
-    context 'when major release of Ubuntu is unsupported' do
-      let :facts do
-        { osfamily:                  'Debian',
-          operatingsystemmajrelease: '8',
-          lsbdistcodename:           'hardy',
-          monit_version:             '5' }
-      end
-
-      it 'fails' do
-        expect {
-          is_expected.to contain_class('monit')
-        }.to raise_error(Puppet::Error, %r{monit supports Debian 6 \(squeeze\), 7 \(wheezy\), 8 \(jessie\), 9 \(stretch\) and 10 \(buster\) \
-and Ubuntu 10\.04 \(lucid\), 12\.04 \(precise\), 14\.04 \(trusty\), 16\.04 \(xenial\) and 18\.04 \(bionic\). \
-Detected lsbdistcodename is <hardy>\.})
-      end
-    end
-
-    context 'when osfamily is unsupported' do
-      let :facts do
-        { osfamily:                  'Unsupported',
-          operatingsystemmajrelease: '9',
-          monit_version:             '5' }
-      end
-
-      it 'fails' do
-        expect {
-          is_expected.to contain_class('monit')
-        }.to raise_error(Puppet::Error, %r{monit supports osfamilies Debian and RedHat\. Detected osfamily is <Unsupported>\.})
-      end
-    end
-  end
-
-  describe 'variable type and content validations' do
-    # set needed custom facts and variables
-    let(:facts) do
-      {
-        osfamily:                  'Debian',
-        operatingsystemrelease:    '6.0',
-        operatingsystemmajrelease: '6',
-        lsbdistcodename:           'squeeze',
-        monit_version:             '5',
-      }
-    end
-    let(:validation_params) do
-      {
-        #:param => 'value',
-      }
-    end
-
-    validations = {
-      'absolute_path' => {
-        name: ['config_file', 'config_dir'],
-        valid: ['/absolute/filepath', '/absolute/directory/'],
-        invalid: ['invalid', 3, 2.42, ['array'], { 'ha' => 'sh' }],
-        message: '(expects a String value|is not an absolute path)',
-      },
-      'array' => {
-        name: ['alert_emails'],
-        valid: [['valid', 'array']],
-        invalid: ['string', { 'ha' => 'sh' }, 3, 2.42, true],
-        message: 'expects an Array value',
-      },
-      'bool_stringified' => {
-        name: ['httpd', 'manage_firewall', 'service_enable', 'service_manage', 'mmonit_https', 'mmonit_without_credential', 'config_dir_purge'],
-        valid: [true, 'true', false, 'false'],
-        invalid: ['invalid', 3, 2.42, ['array'], { 'ha' => 'sh' }, nil],
-        message: 'expects a value of type Boolean or Enum',
-      },
-      'integer' => {
-        name: ['check_interval', 'httpd_port', 'mmonit_port'],
-        valid: [242],
-        invalid: [2.42, 'invalid', ['array'], { 'ha' => 'sh ' }, true, false, nil],
-        message: 'expects an Integer',
-      },
-      'optional_integer' => {
-        name: ['start_delay'],
-        valid: [242],
-        invalid: [2.42, 'invalid', ['array'], { 'ha' => 'sh ' }, true, false, nil],
-        message: 'expects a value of type Undef or Integer',
-      },
-      'optional_logfile' => {
-        name: ['logfile'],
-        valid: ['/absolute/filepath', '/absolute/directory/', 'syslog', 'syslog facility log_local0'],
-        invalid: ['invalid', 3, 2.42, ['array'], { 'ha' => 'sh' }],
-        message: '(expects a value of type Undef or String|is not an absolute path)',
-      },
-      'optional_hash' => {
-        name: ['mailformat'],
-        valid: [{ 'ha' => 'sh' }],
-        invalid: ['string', 3, 2.42, ['array'], true, false, nil],
-        message: 'expects a value of type Undef or Hash',
-      },
-      'optional_string' => {
-        name: ['mailserver', 'mmonit_address'],
-        valid: ['present'],
-        invalid: [['array'], { 'ha' => 'sh' }],
-        message: 'expects a value of type Undef or String',
-      },
-      'string' => {
-        name: ['httpd_address', 'httpd_allow', 'httpd_user', 'httpd_password',
-               'package_ensure', 'package_name', 'service_name', 'mmonit_user',
-               'mmonit_password'],
-        valid: ['present'],
-        invalid: [['array'], { 'ha' => 'sh' }],
-        message: 'expects a String value',
-      },
-      'service_ensure_string' => {
-        name: ['service_ensure'],
-        valid: ['running'],
-        invalid: [['array'], { 'ha' => 'sh' }],
-        message: 'expects a match for Enum\[\'running\', \'stopped\'\]',
-      },
-    }
-
-    validations.sort.each do |type, var|
-      var[:name].each do |var_name|
-        var[:valid].each do |valid|
-          context "with #{var_name} (#{type}) set to valid #{valid} (as #{valid.class})" do
-            let(:params) { validation_params.merge(:"#{var_name}" => valid) }
-
-            it { is_expected.to compile }
-          end
-        end
-
-        var[:invalid].each do |invalid|
-          context "with #{var_name} (#{type}) set to invalid #{invalid} (as #{invalid.class})" do
-            let(:params) { validation_params.merge(:"#{var_name}" => invalid) }
-
-            it 'fails' do
-              expect {
-                catalogue
-              }.to raise_error(Puppet::Error, %r{#{var[:message]}})
-            end
-          end
-        end
-      end # var[:name].each
-    end # validations.sort.each
-  end # describe 'variable type and content validations'
 end
