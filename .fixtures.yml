@@ -1,4 +1,5 @@
+---
 fixtures:
   repositories:
-    'stdlib': 'https://github.com/puppetlabs/puppetlabs-stdlib.git'
-    'firewall': 'https://github.com/puppetlabs/puppetlabs-firewall.git'
+    firewall: https://github.com/puppetlabs/puppetlabs-firewall.git
+    stdlib: https://github.com/puppetlabs/puppetlabs-stdlib.git
