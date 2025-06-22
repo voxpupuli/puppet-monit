@@ -64,9 +64,9 @@ describe 'monit' do
         end
 
         monit_config_fixture = if monit_version == '4'
-                                 File.read(fixtures("monitrc.4.#{facts[:os]['family']}"))
+                                 File.read(File.join('spec', 'fixtures', "monitrc.4.#{facts[:os]['family']}"))
                                else
-                                 File.read(fixtures("monitrc.#{facts[:os]['family']}"))
+                                 File.read(File.join('spec', 'fixtures', "monitrc.#{facts[:os]['family']}"))
                                end
 
         it { is_expected.to contain_file('monit_config').with_content(monit_config_fixture) }
