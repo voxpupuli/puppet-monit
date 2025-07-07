@@ -12,17 +12,28 @@ describe 'monit' do
           config_dir  = '/etc/monit/conf.d'
           monit_version = '5'
           default_file_content = 'START=yes'
+          state_dir            = '/var/lib/monit'
           service_hasstatus    = true
+          root_group           = 'root'
         when 'RedHat'
           config_dir        = '/etc/monit.d'
           service_hasstatus = true
           monit_version     = '5'
+          state_dir         = '/var/lib/monit'
+          root_group        = 'root'
           config_file = case facts[:os]['name']
                         when 'Amazon'
                           '/etc/monit.conf'
                         else
                           '/etc/monitrc'
                         end
+        when 'FreeBSD'
+          config_dir        = '/usr/local/etc/monit.d'
+          service_hasstatus = true
+          monit_version     = '5'
+          config_file       = '/usr/local/etc/monitrc'
+          state_dir         = '/var/tmp/monit'
+          root_group        = 'wheel'
         else
           raise 'unsupported osfamily detected'
         end
@@ -37,17 +48,18 @@ describe 'monit' do
         end
 
         it do
-          is_expected.to contain_file('/var/lib/monit').with('ensure' => 'directory',
-                                                             'owner'  => 'root',
-                                                             'group'  => 'root',
-                                                             'mode'   => '0755')
+          is_expected.to contain_file('monit_state_dir').with('ensure' => 'directory',
+                                                              'path' => state_dir,
+                                                              'owner' => 'root',
+                                                              'group' => root_group,
+                                                              'mode' => '0755')
         end
 
         it do
           is_expected.to contain_file('monit_config_dir').with('ensure'  => 'directory',
                                                                'path'    => config_dir,
                                                                'owner'   => 'root',
-                                                               'group'   => 'root',
+                                                               'group'   => root_group,
                                                                'mode'    => '0755',
                                                                'purge'   => false,
                                                                'recurse' => false,
@@ -58,7 +70,7 @@ describe 'monit' do
           is_expected.to contain_file('monit_config').with('ensure'  => 'file',
                                                            'path'    => config_file,
                                                            'owner'   => 'root',
-                                                           'group'   => 'root',
+                                                           'group'   => root_group,
                                                            'mode'    => '0600',
                                                            'require' => 'Package[monit]')
         end
@@ -87,7 +99,7 @@ describe 'monit' do
                                                        'hasrestart' => true,
                                                        'hasstatus'  => service_hasstatus,
                                                        'subscribe'  => [
-                                                         'File[/var/lib/monit]',
+                                                         'File[monit_state_dir]',
                                                          'File[monit_config_dir]',
                                                          'File[monit_config]',
                                                        ])

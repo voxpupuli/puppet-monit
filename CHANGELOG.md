@@ -1,176 +1,165 @@
-## 2020-12-09 - Release 3.0.0
-### Summary
+# Changelog
 
-This release adds the support for Debian 10/Buster and for CentOS 8 and the ability to use special characters in `httpd_password` parameter.
-It fixes logging limitations and Amazon Linux compatibility.
-It uses a Docker Compose file to use PDK 1.8.1.
+All notable changes to this project will be documented in this file.
+Each new release typically also includes the latest modulesync defaults.
+These should not affect the functionality of the module.
 
-***BREAKING CHANGES***
-This release remove the support for Puppet 3.
+## [v3.0.0](https://github.com/voxpupuli/puppet-monit/tree/v3.0.0) (2024-08-15)
 
-#### Features
-- Added the support for Debian 10/Buster
-- Added the support for CentOS 8
-- Added ability to use special characters in `httpd_password` parameter
+[Full Changelog](https://github.com/voxpupuli/puppet-monit/compare/v3.0.0...v3.0.0)
 
-#### BugFixes
-- Fixed logging limitations
-- Fixed Amazon Linux compatibility
+**Breaking changes:**
 
-#### Development
-- Added a Docker Compose file to use PDK
+- Drop Ubuntu 18.04 support [\#54](https://github.com/voxpupuli/puppet-monit/pull/54) ([zilchms](https://github.com/zilchms))
+- Drop support for puppetlabs-firewall \<5.0.0 [\#51](https://github.com/voxpupuli/puppet-monit/pull/51) ([zilchms](https://github.com/zilchms))
+- Clean up fixtures and codebase hardening [\#48](https://github.com/voxpupuli/puppet-monit/pull/48) ([zilchms](https://github.com/zilchms))
+- Drop Oracle Linux 7 support [\#47](https://github.com/voxpupuli/puppet-monit/pull/47) ([zilchms](https://github.com/zilchms))
+- Drop Debian 10 support [\#45](https://github.com/voxpupuli/puppet-monit/pull/45) ([zilchms](https://github.com/zilchms))
+- Drop amazon 2016 and 2018; add amazon 2023 [\#42](https://github.com/voxpupuli/puppet-monit/pull/42) ([zilchms](https://github.com/zilchms))
+- Drop ScientificLinux 5 and 6 support [\#41](https://github.com/voxpupuli/puppet-monit/pull/41) ([zilchms](https://github.com/zilchms))
+- drop CentOs 5 and 6 support [\#40](https://github.com/voxpupuli/puppet-monit/pull/40) ([zilchms](https://github.com/zilchms))
+- Drop OracleLinux 5 and 6 support [\#39](https://github.com/voxpupuli/puppet-monit/pull/39) ([zilchms](https://github.com/zilchms))
+- Drop Redhat 5 and 6 support [\#38](https://github.com/voxpupuli/puppet-monit/pull/38) ([zilchms](https://github.com/zilchms))
+- drop EOL Ubuntu 10, 12, 14 and 16 support [\#37](https://github.com/voxpupuli/puppet-monit/pull/37) ([zilchms](https://github.com/zilchms))
+- drop EOL Debian 6, 7, 8, 9 support [\#36](https://github.com/voxpupuli/puppet-monit/pull/36) ([zilchms](https://github.com/zilchms))
+- Drop Puppet 6 support [\#27](https://github.com/voxpupuli/puppet-monit/pull/27) ([bastelfreak](https://github.com/bastelfreak))
 
-## 2018-11-23 - Release 2.0.1
-### Summary
+**Implemented enhancements:**
 
-This release fixes the support for Amazon Linux 2 and uses PDK 1.7.1.
+- focal support needs to be added to fail check [\#20](https://github.com/voxpupuli/puppet-monit/issues/20)
+- Add RedHat/CentOS/Rocky/Alma 8 and 9 support [\#55](https://github.com/voxpupuli/puppet-monit/pull/55) ([zilchms](https://github.com/zilchms))
+- Add Ubuntu 20.04 and 22.04 support [\#53](https://github.com/voxpupuli/puppet-monit/pull/53) ([zilchms](https://github.com/zilchms))
+- Add Debian 12 support [\#52](https://github.com/voxpupuli/puppet-monit/pull/52) ([zilchms](https://github.com/zilchms))
+- puppetlabs/firewall: Allow 8.x [\#50](https://github.com/voxpupuli/puppet-monit/pull/50) ([zilchms](https://github.com/zilchms))
+- Add Oracle Linux 8 and 9 support [\#46](https://github.com/voxpupuli/puppet-monit/pull/46) ([zilchms](https://github.com/zilchms))
+- Add Debian 11 support [\#44](https://github.com/voxpupuli/puppet-monit/pull/44) ([zilchms](https://github.com/zilchms))
+- Add Puppet 8 support [\#29](https://github.com/voxpupuli/puppet-monit/pull/29) ([bastelfreak](https://github.com/bastelfreak))
+- puppetlabs/stdlib: Allow 9.x [\#28](https://github.com/voxpupuli/puppet-monit/pull/28) ([bastelfreak](https://github.com/bastelfreak))
+- fixing Amazon Linux 2 support [\#23](https://github.com/voxpupuli/puppet-monit/pull/23) ([erik-frontify](https://github.com/erik-frontify))
 
-#### BugFixes
-- Fixed the support for Amazon Linux 2
+**Closed issues:**
 
-## 2018-10-07 - Release 2.0.0
-### Summary
+- Support latest puppet version \(7.x\) [\#26](https://github.com/voxpupuli/puppet-monit/issues/26)
+- Error 500 on SERVER: Server Error: Evaluation Error: Error while evaluating a Function Call, monit supports Amazon Linux 2. Detected operatingsystemmajrelease is \<2\>. [\#21](https://github.com/voxpupuli/puppet-monit/issues/21)
+- Support for CentOS 8 [\#16](https://github.com/voxpupuli/puppet-monit/issues/16)
+- Spec test for v2.0.1 are failing [\#13](https://github.com/voxpupuli/puppet-monit/issues/13)
+- old syntax detected [\#11](https://github.com/voxpupuli/puppet-monit/issues/11)
 
-This release adds `httpd_allow` configuration and support for MMonit HTTPs addresses and uses PDK 1.7.0.
+**Merged pull requests:**
 
-***BREAKING CHANGES***
-The MMonit address is now by default with HTTPs with the port 8443 (8080 previously).
+- remove specialcasing for no longer supported OS [\#43](https://github.com/voxpupuli/puppet-monit/pull/43) ([zilchms](https://github.com/zilchms))
 
-#### Features
-- Add `httpd_allow` configuration
-- Add support for MMonit HTTPs addresses
+## [v3.0.0](https://github.com/voxpupuli/puppet-monit/tree/v3.0.0) (2020-12-09)
 
-## 2018-07-09 - Release 1.4.0
-### Summary
+[Full Changelog](https://github.com/voxpupuli/puppet-monit/compare/v2.0.1...v3.0.0)
 
-This release adds support to Amazon Linux 2 and uses PDK 1.6.1.
+**Merged pull requests:**
 
-#### Features
-- Added support to Amazon Linux 2
+- PDK update to 1.18 [\#19](https://github.com/voxpupuli/puppet-monit/pull/19) ([aursu](https://github.com/aursu))
+- Added ability to use special characters in httpd\_password parameter [\#18](https://github.com/voxpupuli/puppet-monit/pull/18) ([aursu](https://github.com/aursu))
+- Fixing logging limitations with syslog. [\#15](https://github.com/voxpupuli/puppet-monit/pull/15) ([amigne](https://github.com/amigne))
+- add Support for debian 10/buster [\#10](https://github.com/voxpupuli/puppet-monit/pull/10) ([to-kn](https://github.com/to-kn))
 
-## 2018-05-03 - Release 1.3.0
-### Summary
+## [v2.0.1](https://github.com/voxpupuli/puppet-monit/tree/v2.0.1) (2018-11-23)
 
-This release adds support to Ubuntu Bionic and uses PDK 1.5.0.
+[Full Changelog](https://github.com/voxpupuli/puppet-monit/compare/v2.0.0...v2.0.1)
 
-#### Features
-- Added support to Ubuntu Bionic
+**Implemented enhancements:**
 
-## 2018-01-26 - Release 1.2.0
-### Summary
+- Add httpd\_allow configuration [\#5](https://github.com/voxpupuli/puppet-monit/issues/5)
+- Add support for MMonit HTTPs addresses [\#4](https://github.com/voxpupuli/puppet-monit/issues/4)
 
-This release adds support to Debian Stretch and uses PDK 1.3.2.
+**Merged pull requests:**
 
-#### Features
-- Added support to Debian Stretch
+- Amazon fixed the wrong versioning for Amazon linux 2  [\#8](https://github.com/voxpupuli/puppet-monit/pull/8) ([erik-frontify](https://github.com/erik-frontify))
 
-## 2018-01-26 - Release 1.1.3
-### Summary
+## [v2.0.0](https://github.com/voxpupuli/puppet-monit/tree/v2.0.0) (2018-10-08)
 
-This release benefited from the changes introduced by PDK 1.3 (`pdk convert`)
+[Full Changelog](https://github.com/voxpupuli/puppet-monit/compare/v1.4.0...v2.0.0)
 
-## 2016-11-07 - Release 1.1.2
-### Summary
-This release adds support to Ubuntu Xenial and improves compatibility with Puppet Server.
+**Implemented enhancements:**
 
-#### Features
-- Added support to Ubuntu 16.04.
+- Add httpd\_allow configuration [\#5](https://github.com/voxpupuli/puppet-monit/issues/5)
+- Add support for MMonit HTTPs addresses [\#4](https://github.com/voxpupuli/puppet-monit/issues/4)
+- Add httpd\_allow configuration [\#7](https://github.com/voxpupuli/puppet-monit/pull/7) ([FlorentPoinsaut](https://github.com/FlorentPoinsaut))
+- Add support for MMonit HTTPs addresses [\#6](https://github.com/voxpupuli/puppet-monit/pull/6) ([FlorentPoinsaut](https://github.com/FlorentPoinsaut))
 
-### Bugfixes
-- Fixed condition that fails with `strict_variables` enabled on the Puppet Server side.
+## [v1.4.0](https://github.com/voxpupuli/puppet-monit/tree/v1.4.0) (2018-08-03)
 
-## 2016-08-30 - Release 1.1.1
-### Summary
-This release fixes typo and a bad URL. It is published with [Geppeto](https://puppetlabs.github.io/geppetto/).
+[Full Changelog](https://github.com/voxpupuli/puppet-monit/compare/v1.3.0...v1.4.0)
 
-## 2016-08-05 - Release 1.1.0
-### Summary
-This release adds support to Debian jessie, OracleLinux and Scientific OSes, as well as a `config_dir_purge` parameter and a lot of great test improvements.
+**Merged pull requests:**
 
-#### Features
-- Added support to Debian jessie.
-- Added support to OracleLinux and Scientific.
-- Added `monit_version` fact.
-- Added `config_dir_purge` parameter to `monit` class and to the template of configuration file.
+- Add amazon linux2 support [\#3](https://github.com/voxpupuli/puppet-monit/pull/3) ([erik-frontify](https://github.com/erik-frontify))
 
-#### Bugfixes
-- Fixed bad dependencies (puppetlabs/stdlib >= 4.6.0 + add puppetlabs/firewall)
+## [v1.3.0](https://github.com/voxpupuli/puppet-monit/tree/v1.3.0) (2018-05-05)
 
-#### Tests
-- Amazing enhancement of code coverage (special thanks to [Phil Friderici](https://github.com/Phil-Friderici) and [Garrett Honeycutt](https://github.com/ghoneycutt))
-- Puppet v3 (optionally with future parser) and v4 with Ruby versions 1.8.7 (Puppet v3 only), 1.9.3, 2.0.0 and 2.1.0.
-- Improvment of style and additional community style checks
+[Full Changelog](https://github.com/voxpupuli/puppet-monit/compare/v1.2.0...v1.3.0)
 
-## 2015-08-06 - Release 1.0.0
-### Summary
-This release updates metadata to support new version of RedHat family OSes, as well as new features and test improvements.
+**Merged pull requests:**
 
-#### Features
-- Added support to RedHat family OSes version 7.
-- Added configuration option to set an M/Monit report server in Monit configuration file.
-- Added support for start delay parameter.
-- Made HTTPd authentication by user and password optional.
+- Support bionic [\#1](https://github.com/voxpupuli/puppet-monit/pull/1) ([elmobp](https://github.com/elmobp))
 
-#### Tests
-- Added future parser in Travis matrix.
-- Added acceptance tests.
+## [v1.2.0](https://github.com/voxpupuli/puppet-monit/tree/v1.2.0) (2018-01-26)
 
-##2015-06-06 - Release 0.5.0
-###Summary
-This release adds `mail-format` and `alert` parameters to the monit configuration file.
+[Full Changelog](https://github.com/voxpupuli/puppet-monit/compare/v1.1.3...v1.2.0)
 
-####Features
-- Add `mailformat` parameter to `monit` class and to the template of configuration file.
-- Add `alert_emails` parameter to `monit` class and to the template of configuration file.
+## [v1.1.3](https://github.com/voxpupuli/puppet-monit/tree/v1.1.3) (2018-01-26)
 
-####Bugfixes
-- `ìdfile` parameter does not exist for Monit 4
+[Full Changelog](https://github.com/voxpupuli/puppet-monit/compare/v1.1.2...v1.1.3)
 
-##2015-04-02 - Release 0.4.0
-###Summary
-This release adds `logile` and `mailserver` parameters to the monit configuration file.
+## [v1.1.2](https://github.com/voxpupuli/puppet-monit/tree/v1.1.2) (2016-11-07)
 
-####Features
-- Add `logfile` parameter to `monit` class and to the template of configuration file.
-- Add `mailserver` parameter to `monit` class and to the template of configuration file.
+[Full Changelog](https://github.com/voxpupuli/puppet-monit/compare/v1.1.1...v1.1.2)
 
-####Bugfixes
-- Bad variable use for configuration directory in `monit::check`
+## [v1.1.1](https://github.com/voxpupuli/puppet-monit/tree/v1.1.1) (2016-08-30)
 
-##2015-04-01 - Release 0.3.0
-###Summary
+[Full Changelog](https://github.com/voxpupuli/puppet-monit/compare/v1.1.0...v1.1.1)
 
-This release adds support for RedHat family OSes.
+## [v1.1.0](https://github.com/voxpupuli/puppet-monit/tree/v1.1.0) (2016-08-05)
 
-##2015-02-22 - Release 0.2.0
-###Summary
+[Full Changelog](https://github.com/voxpupuli/puppet-monit/compare/v1.0.0...v1.1.0)
 
-This release adds `content` parameter to `monit::check`.
+## [v1.0.0](https://github.com/voxpupuli/puppet-monit/tree/v1.0.0) (2015-08-06)
 
-##2015-02-09 - Release 0.1.4
-###Summary
+[Full Changelog](https://github.com/voxpupuli/puppet-monit/compare/v0.5.0...v1.0.0)
 
-This release improves the compliance with Debian Squeeze and Ubuntu Lucid.
+## [v0.5.0](https://github.com/voxpupuli/puppet-monit/tree/v0.5.0) (2015-06-06)
 
-##2014-12-22 - Release 0.1.3
-###Summary
+[Full Changelog](https://github.com/voxpupuli/puppet-monit/compare/v0.4.0...v0.5.0)
 
-This release adds tests and improves the compliance with Puppet Guidelines.
+## [v0.4.0](https://github.com/voxpupuli/puppet-monit/tree/v0.4.0) (2015-04-02)
 
-##0.1.2
+[Full Changelog](https://github.com/voxpupuli/puppet-monit/compare/v0.3.0...v0.4.0)
 
-2014-09-18
+## [v0.3.0](https://github.com/voxpupuli/puppet-monit/tree/v0.3.0) (2015-04-01)
 
-* Add parameter `ensure` for `monit::check` - wild <wild@portal>
-* Fix bad validation for package_name for `monit::check` - Florent Poinsaut <florent.poinsaut@echoes-tech.com>
+[Full Changelog](https://github.com/voxpupuli/puppet-monit/compare/v0.2.0...v0.3.0)
 
-##0.1.1
-2014-09-15 Florent Poinsaut <florent.poinsaut@echoes-tech.com>
-* Typo
+## [v0.2.0](https://github.com/voxpupuli/puppet-monit/tree/v0.2.0) (2015-02-22)
 
-2014-09-03 https://github.com/wild-r
-* Disable validate_absolute_path on check.pp to allow link like 'puppet://...'
+[Full Changelog](https://github.com/voxpupuli/puppet-monit/compare/v0.1.4...v0.2.0)
 
-##0.1.0
-2014-08-29 Florent Poinsaut <florent.poinsaut@echoes-tech.com>
-* Initial release
+## [v0.1.4](https://github.com/voxpupuli/puppet-monit/tree/v0.1.4) (2015-02-09)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-monit/compare/v0.1.3...v0.1.4)
+
+## [v0.1.3](https://github.com/voxpupuli/puppet-monit/tree/v0.1.3) (2014-12-22)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-monit/compare/v0.1.2...v0.1.3)
+
+## [v0.1.2](https://github.com/voxpupuli/puppet-monit/tree/v0.1.2) (2014-09-18)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-monit/compare/v0.1.1...v0.1.2)
+
+## [v0.1.1](https://github.com/voxpupuli/puppet-monit/tree/v0.1.1) (2014-09-15)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-monit/compare/v0.1.0...v0.1.1)
+
+## [v0.1.0](https://github.com/voxpupuli/puppet-monit/tree/v0.1.0) (2014-08-29)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-monit/compare/5c2a9c8ed93ee8ff0f6d305042ae8f1e808b6f92...v0.1.0)
+
+
+
+\* *This Changelog was automatically generated by [github_changelog_generator](https://github.com/github-changelog-generator/github-changelog-generator)*

@@ -80,6 +80,13 @@
       "operatingsystemrelease": [
         "7"
       ]
+    },
+    {
+      "operatingsystem": "FreeBSD",
+      "operatingsystemrelease": [
+        "13",
+        "14"
+      ]
     }
   ],
   "requirements": [

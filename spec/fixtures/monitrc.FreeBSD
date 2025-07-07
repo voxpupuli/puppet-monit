@@ -1,0 +1,11 @@
+# monitrc: Managed by puppet.
+#
+set daemon 120
+set logfile /var/log/monit.log
+set idfile /var/tmp/monit/id
+set statefile /var/tmp/monit/state
+set eventqueue
+    basedir /var/tmp/monit/events
+    slots 100
+
+include /usr/local/etc/monit.d/*
