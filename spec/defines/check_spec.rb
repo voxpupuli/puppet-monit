@@ -12,25 +12,33 @@ describe 'monit::check' do
         facts
       end
 
-      confdir = if facts[:os]['family'] == 'RedHat'
-                  '/etc/monit.d'
-                else
-                  '/etc/monit/conf.d'
-                end
+      case facts[:os]['family']
+      when 'Debian'
+        config_dir = '/etc/monit/conf.d'
+        root_group = 'root'
+      when 'RedHat'
+        config_dir = '/etc/monit.d'
+        root_group = 'root'
+      when 'FreeBSD'
+        config_dir = '/usr/local/etc/monit.d'
+        root_group = 'wheel'
+      else
+        raise 'unsupported osfamily detected'
+      end
 
       context 'with default values for parameters' do
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_class('monit') }
 
         it do
-          is_expected.to contain_file("#{confdir}/test").with('ensure' => 'present',
-                                                              'owner' => 'root',
-                                                              'group' => 'root',
-                                                              'mode' => '0644',
-                                                              'source' => nil,
-                                                              'content' => nil,
-                                                              'notify' => 'Service[monit]',
-                                                              'require' => 'Package[monit]')
+          is_expected.to contain_file("#{config_dir}/test").with('ensure' => 'present',
+                                                                 'owner' => 'root',
+                                                                 'group' => root_group,
+                                                                 'mode' => '0644',
+                                                                 'source' => nil,
+                                                                 'content' => nil,
+                                                                 'notify' => 'Service[monit]',
+                                                                 'require' => 'Package[monit]')
         end
       end
 
@@ -43,14 +51,14 @@ describe 'monit::check' do
           end
 
           it do
-            is_expected.to contain_file("#{confdir}/test").with('ensure' => value,
-                                                                'owner' => 'root',
-                                                                'group' => 'root',
-                                                                'mode' => '0644',
-                                                                'source' => nil,
-                                                                'content' => nil,
-                                                                'notify' => 'Service[monit]',
-                                                                'require' => 'Package[monit]')
+            is_expected.to contain_file("#{config_dir}/test").with('ensure' => value,
+                                                                   'owner' => 'root',
+                                                                   'group' => root_group,
+                                                                   'mode' => '0644',
+                                                                   'source' => nil,
+                                                                   'content' => nil,
+                                                                   'notify' => 'Service[monit]',
+                                                                   'require' => 'Package[monit]')
           end
         end
       end
@@ -70,14 +78,14 @@ describe 'monit::check' do
         end
 
         it do
-          is_expected.to contain_file("#{confdir}/test").with('ensure' => 'present',
-                                                              'owner' => 'root',
-                                                              'group' => 'root',
-                                                              'mode' => '0644',
-                                                              'source' => nil,
-                                                              'content' => content,
-                                                              'notify' => 'Service[monit]',
-                                                              'require' => 'Package[monit]')
+          is_expected.to contain_file("#{config_dir}/test").with('ensure' => 'present',
+                                                                 'owner' => 'root',
+                                                                 'group' => root_group,
+                                                                 'mode' => '0644',
+                                                                 'source' => nil,
+                                                                 'content' => content,
+                                                                 'notify' => 'Service[monit]',
+                                                                 'require' => 'Package[monit]')
         end
       end
 
@@ -89,14 +97,14 @@ describe 'monit::check' do
         end
 
         it do
-          is_expected.to contain_file("#{confdir}/test").with('ensure' => 'present',
-                                                              'owner' => 'root',
-                                                              'group' => 'root',
-                                                              'mode' => '0644',
-                                                              'source' => 'puppet:///modules/monit/ntp',
-                                                              'content' => nil,
-                                                              'notify' => 'Service[monit]',
-                                                              'require' => 'Package[monit]')
+          is_expected.to contain_file("#{config_dir}/test").with('ensure' => 'present',
+                                                                 'owner' => 'root',
+                                                                 'group' => root_group,
+                                                                 'mode' => '0644',
+                                                                 'source' => 'puppet:///modules/monit/ntp',
+                                                                 'content' => nil,
+                                                                 'notify' => 'Service[monit]',
+                                                                 'require' => 'Package[monit]')
         end
       end
 

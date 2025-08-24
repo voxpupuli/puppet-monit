@@ -99,6 +99,9 @@
 # @param service_name
 #   Tells Puppet what Monit service to manage. Default value: 'monit'
 #
+# @param state_dir
+#   Tells Puppet where Monit should place state files. Default value: varies with operating system
+#
 # @param start_delay *Requires at least Monit 5.0*
 #   If set, Monit will wait the specified time in seconds before it starts checking services. Default value: undef
 #
@@ -131,6 +134,8 @@ class monit (
   Boolean                                 $service_manage            = $monit::params::service_manage,
   String                                  $service_name              = $monit::params::service_name,
   Optional[Integer[1]]                    $start_delay               = $monit::params::start_delay,
+  Stdlib::Absolutepath                    $state_dir                  = $monit::params::state_dir
+
 ) inherits monit::params {
   if $logfile and !($logfile =~ /^syslog(\s+facility\s+log_(local[0-7]|daemon))?/) {
     assert_type(Stdlib::Absolutepath, $logfile)

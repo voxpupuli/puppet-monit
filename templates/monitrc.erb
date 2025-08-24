@@ -8,9 +8,9 @@ with start delay <%= @start_delay %>
 set logfile <%= @logfile %>
 <%- end -%>
 <%- if scope.function_versioncmp([@monit_version_real, '5']) >= 0 -%>
-set idfile /var/lib/monit/id
+set idfile <%= @state_dir %>/id
 <%- end -%>
-set statefile /var/lib/monit/state
+set statefile <%= @state_dir %>/state
 <%- if @mailserver -%>
 set mailserver <%= @mailserver %>
 <%- end -%>
@@ -25,7 +25,7 @@ set mail-format {
 set alert <%= email %>
 <%- end -%>
 set eventqueue
-    basedir /var/lib/monit/events
+    basedir <%= @state_dir %>/events
     slots 100
 <%- if @httpd == true -%>
 set httpd port <%= @httpd_port %> and
