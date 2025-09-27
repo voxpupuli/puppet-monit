@@ -37,6 +37,15 @@
 # @param httpd_password
 #   Specifies the password to access the Monit Dashboard. Default value: 'monit'
 #
+# @param httpd_htpasswd_file
+#   Specifies the path to the htpasswd file. Default value: ''
+#
+# @param httpd_htpasswd_crypto
+#   Specifies the encryption method in the htpasswd file. Default value: `md5`
+#
+# @param httpd_htpasswd_users
+#   An array of users to be managed in the htpasswd file. Default value: []
+#
 # @param logfile
 #   Specifies the logfile directive value. Default value: '/var/log/monit.log'
 #   It is possible to use syslog instead of direct file logging. (e.g. 'syslog facility log\_daemon')
@@ -114,6 +123,9 @@ class monit (
   String                                  $httpd_allow               = $monit::params::httpd_allow,
   String                                  $httpd_user                = $monit::params::httpd_user,
   String                                  $httpd_password            = $monit::params::httpd_password,
+  Optional[String]                        $httpd_htpasswd_file       = $monit::params::httpd_htpasswd_file,
+  Optional[String]                        $httpd_htpasswd_crypto     = $monit::params::httpd_htpasswd_crypto,
+  Optional[Array]                         $httpd_htpasswd_users      = $monit::params::httpd_htpasswd_users,
   Optional[String]                        $logfile                   = $monit::params::logfile,
   Optional[String]                        $mailserver                = $monit::params::mailserver,
   Optional[Hash]                          $mailformat                = $monit::params::mailformat,
