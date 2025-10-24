@@ -66,6 +66,7 @@ The following parameters are available in the `monit` class:
 * [`service_ensure`](#-monit--service_ensure)
 * [`service_manage`](#-monit--service_manage)
 * [`service_name`](#-monit--service_name)
+* [`state_dir`](#-monit--state_dir)
 * [`start_delay`](#-monit--start_delay)
 * [`service_enable`](#-monit--service_enable)
 
@@ -293,6 +294,14 @@ Data type: `String`
 Tells Puppet what Monit service to manage. Default value: 'monit'
 
 Default value: `$monit::params::service_name`
+
+##### <a name="-monit--state_dir"></a>`state_dir`
+
+Data type: `Stdlib::Absolutepath`
+
+Tells Puppet where Monit should place state files. Default value: varies with operating system
+
+Default value: `$monit::params::state_dir`
 
 ##### <a name="-monit--start_delay"></a>`start_delay`
 

@@ -23,7 +23,7 @@ class monit::service inherits monit {
       hasrestart => true,
       hasstatus  => $monit::service_hasstatus,
       subscribe  => [
-        File['/var/lib/monit'],
+        File['monit_state_dir'],
         File['monit_config_dir'],
         File['monit_config'],
       ],
