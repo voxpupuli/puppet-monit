@@ -73,8 +73,8 @@ describe 'monit' do
 
         if facts[:os]['family'] == 'Debian'
           it do
-            is_expected.to contain_file('/etc/default/monit').with('notify' => 'Service[monit]').
-              with_content(%r{^#{default_file_content}$})
+            is_expected.to contain_file('/etc/default/monit').with('notify' => 'Service[monit]')
+                                                             .with_content(%r{^#{default_file_content}$})
           end
         else
           it { is_expected.not_to contain_file('/etc/default/monit') }
