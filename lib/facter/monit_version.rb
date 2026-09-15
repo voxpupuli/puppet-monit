@@ -2,7 +2,7 @@
 
 Facter.add(:monit_version) do
   setcode do
-    monit_version = Facter::Util::Resolution.exec('monit -V 2>&1')
+    monit_version = Facter::Core::Execution.execute('monit -V 2>&1')
     monit_version && monit_version.match(%r{\d+\.\d+$}).to_s
   end
 end

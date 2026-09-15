@@ -7,7 +7,7 @@ describe 'Facter::Util::Fact' do
 
   context 'with monit v5.14 installed' do
     before do
-      allow(Facter::Util::Resolution).to receive(:exec).with('monit -V 2>&1').and_return("This is Monit version 5.14\nCopyright (C) 2001-2015 Tildeslash Ltd. All Rights Reserved.")
+      allow(Facter::Core::Execution).to receive(:execute).with('monit -V 2>&1').and_return("This is Monit version 5.14\nCopyright (C) 2001-2015 Tildeslash Ltd. All Rights Reserved.")
     end
 
     it 'returns 5.14' do
@@ -17,7 +17,7 @@ describe 'Facter::Util::Fact' do
 
   context 'with monit not installed' do
     before do
-      allow(Facter::Util::Resolution).to receive(:exec).with('monit -V 2>&1').and_return(nil)
+      allow(Facter::Core::Execution).to receive(:execute).with('monit -V 2>&1').and_return(nil)
     end
 
     it 'is nil' do
