@@ -51,6 +51,9 @@ The following parameters are available in the `monit` class:
 * [`httpd_allow`](#-monit--httpd_allow)
 * [`httpd_user`](#-monit--httpd_user)
 * [`httpd_password`](#-monit--httpd_password)
+* [`httpd_htpasswd_file`](#-monit--httpd_htpasswd_file)
+* [`httpd_htpasswd_crypto`](#-monit--httpd_htpasswd_crypto)
+* [`httpd_htpasswd_users`](#-monit--httpd_htpasswd_users)
 * [`logfile`](#-monit--logfile)
 * [`mailserver`](#-monit--mailserver)
 * [`mailformat`](#-monit--mailformat)
@@ -156,6 +159,30 @@ Data type: `String`
 Specifies the password to access the Monit Dashboard. Default value: 'monit'
 
 Default value: `$monit::params::httpd_password`
+
+##### <a name="-monit--httpd_htpasswd_file"></a>`httpd_htpasswd_file`
+
+Data type: `Optional[String]`
+
+Specifies the path to the htpasswd file. Default value: ''
+
+Default value: `$monit::params::httpd_htpasswd_file`
+
+##### <a name="-monit--httpd_htpasswd_crypto"></a>`httpd_htpasswd_crypto`
+
+Data type: `Optional[String]`
+
+Specifies the encryption method in the htpasswd file. Default value: `md5`
+
+Default value: `$monit::params::httpd_htpasswd_crypto`
+
+##### <a name="-monit--httpd_htpasswd_users"></a>`httpd_htpasswd_users`
+
+Data type: `Optional[Array]`
+
+An array of users to be managed in the htpasswd file. Default value: []
+
+Default value: `$monit::params::httpd_htpasswd_users`
 
 ##### <a name="-monit--logfile"></a>`logfile`
 
